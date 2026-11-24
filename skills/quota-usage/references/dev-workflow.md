@@ -76,14 +76,19 @@ SKILL.md 只留「什么时候用、跑什么、输出怎么读、出错怎么�
 ### ⑥ 收尾
 
 ```sh
-cd "projects/<工程>/<技能名>"
-python3 tests/run.py            # 末行须为「失败 0 项」
-git add -A && git commit -m "feat(<平台>): 接入 <平台> 额度查询"
-cd ..
-python3 /var/minis/skills/skill-generator/scripts/deploy.py   # 测 → 同步 → 推镜像 → 打包
+cd "projects/<工程>"
+
+# 发布分两轮，由 release.py 控制，不靠记忆
+python3 /var/minis/skills/skill-generator/scripts/release.py prepare <技能名>
+# 把输出的确认包贴给用户，等明确点头
+python3 /var/minis/skills/skill-generator/scripts/release.py confirm <snapshot>
 ```
 
-上线工具只有一份，在 skill-generator 的 `scripts/` 下，**不要复制到本工程**。
+`prepare` 出「变更记录 + 文件清单 + 增删行数 + snapshot」，`confirm` 先重算 snapshot 比对
+（贴出后改了任何文件就拒绝），再依次 validate → 跑测试 → commit → deploy → 打包。
+
+工具只有一份，在 skill-generator 的 `scripts/` 下，**不要复制到本工程**。
+底层的 `deploy.py` 也能单独用（`--dry` 看差异、`--pack-only` 只出包），但它不做 snapshot 校验。
 
 ## 提交规范
 

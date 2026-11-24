@@ -122,7 +122,31 @@ def pack_dist(name: str, dry: bool) -> bool:
             print(f"  ✓ 归档 {moved} 个旧版 → {dest}")
         except OSError as e:
             print(f"  ⚠️ 归档失败（新产物已在位，旧版留在 skills-dist）: {e}")
+
+    # 3) 归档区只留里程碑版（x.y.0），补丁版归档后即删——规则见 git-workflow.md
+    prune_archive(name)
     return True
+
+
+def prune_archive(name: str) -> None:
+    """归档区每个 x.y 只留最高补丁版。本次发布的版本不在归档区，天然不参与。"""
+    dest = ARCHIVE_DIR / name
+    if not dest.is_dir():
+        return
+    groups = {}
+    for z in dest.glob(f"{name}_v*.zip"):
+        m = re.search(r"_v(\d+)\.(\d+)\.(\d+)\.zip$", z.name)
+        if m:
+            key = (int(m.group(1)), int(m.group(2)))
+            groups.setdefault(key, []).append((int(m.group(3)), z))
+    removed = []
+    for items in groups.values():
+        items.sort()
+        for _, z in items[:-1]:
+            z.unlink(missing_ok=True)
+            removed.append(z.name)
+    if removed:
+        print(f"  · 归档区清理 {len(removed)} 个非最高补丁版：{', '.join(removed)}")
 
 
 def deploy_one(src: Path, dry: bool, skip_test: bool) -> bool:

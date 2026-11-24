@@ -1,3 +1,8 @@
+1.3.2 · 2026-11-24
+
+技能规范（修）
+- 新平台接入的收尾步骤改为 `release.py prepare → confirm` 两轮流程（snapshot 校验在前、测试与提交在后），不再只提 `deploy.py`；同时说明底层 `deploy.py` 可单独使用但不做 snapshot 校验。
+
 1.3.1 · 2026-11-24
 
 技能规范（修）

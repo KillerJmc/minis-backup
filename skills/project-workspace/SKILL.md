@@ -1,7 +1,7 @@
 ---
 name: project-workspace
 description: 项目绑定，项目迁移，项目查询，资源同步。
-version: 1.5.0
+version: 1.5.1
 triggers: 工程,项目,改名,合并,切换工程,新建项目
 
 ---
@@ -129,17 +129,19 @@ ws.py sync --dry    # 只看要做什么
 
 其余一律不建骨架。**会话产生的产物全部写进工程目录**，不往 `/tmp`、`workspace/`、`shared/` 放：交付物放根目录或按任务建子目录，中间稿、试错数据也留在工程里——工程在外部挂载上，由 git 管着，放到 `/tmp` 一重启就没，也进不了历史。跑测试用的隔离沙盒不算产物，可以用 `/tmp`，跑完即弃。
 
+技能工程多一套要求：这个目录同时是技能工程时，`PROJECT.md`、`.gitignore`、`temp/`、`docs/` 也要有——那是 skill-generator 对技能工程的规定，不是本技能对普通工程的要求。
+
 **命名**——工程名即目录名：单层、非隐藏、不含 `/` `\` `..`，否则 rc=2 拒绝。
 
 **静默**——开场读到「未分组」不解释、不问用户，直接按上表默认逻辑走。
 
 ## 修改本技能后
 
-这一节只管**本技能自己**——它是一份技能，所以要按写技能的规范维护；与它规定的「工程」是两回事，工程只需要 `.git` 与 `PROGRESS.md` 两项。
+这一节只管**本技能自己**——它是一份技能，所以要按写技能的规范维护；与它规定的「工程」是两回事，普通工程只需要 `.git` 与 `PROGRESS.md` 两项。
 
 工作副本在 `<挂载>/projects/project-workspace/project-workspace/`，测试全绿才算修改完成。**不要直接改 `/var/minis/skills/` 下的文件**——那是部署产物，下次上线会被覆盖且不进历史。
 
-1. 在工作副本里改，并在 `git commit` 前给 `tests/cases.json` 补对话级用例（格式见 `tests/README.md`）；
-2. 在 `project-workspace/` 里提交：`git add -A && git commit -m "fix(ws): …"`（类型见上级目录 `WORKFLOW.md`）；
-3. 回到上级目录跑 `python3 deploy.py`：先测，末行不是「失败 0 项」就拒绝上线；通过才同步 skills 并推镜像；
-4. 上线后在 `PROJECT.md` 补一行改动摘要。
+1. 在工作副本里改，并在发布前给 `tests/cases.json` 补对话级用例（格式见 `tests/README.md`）；
+2. 回到工程目录跑 `python3 /var/minis/skills/skill-generator/scripts/release.py prepare project-workspace`，把确认包贴给用户；
+3. 用户认可后跑 `release.py confirm <snapshot>`：它会依次跑校验、测试、提交、部署、打包，任一不过就停；
+4. 上线后在 `PROGRESS.md` 记一行。

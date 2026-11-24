@@ -1,7 +1,7 @@
 ---
 name: skill-generator
 description: 新建技能，改写技能，校验技能结构
-version: 1.8.2
+version: 1.8.3
 triggers: 写技能,新建技能,改技能,技能规范,校验技能
 
 ---

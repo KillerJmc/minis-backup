@@ -1,3 +1,9 @@
+1.5.1 · 2026-11-24
+
+文档修正（修）
+- 「修改本技能后」改用新发布流程：`release.py prepare` → `confirm <snapshot>`，不再手敲 `deploy.py`，也不再指向已不存在的 `WORKFLOW.md`。
+- 澄清工程必备两项的适用范围：普通工程只要 `.git` 与 `PROGRESS.md`；技能工程另按 skill-generator 的规范补齐 `PROJECT.md`、`.gitignore`、`temp/`、`docs/`。
+
 1.5.0 · 2026-11-24
 
 产物落点（改）

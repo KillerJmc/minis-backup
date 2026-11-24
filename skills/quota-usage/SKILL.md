@@ -1,7 +1,7 @@
 ---
 name: quota-usage
 description: 额度查询，每日签到，平台列表
-version: 1.3.1
+version: 1.3.2
 triggers: 额度,余额,签到,每日签到,消耗,魔粒,麦块,魔搭,七牛,quota
 ---
 
