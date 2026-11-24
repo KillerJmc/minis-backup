@@ -1,0 +1,14 @@
+# minis-git-backup 自动生成
+# 含 .git 或 .gitignore 的目录会整目录打包进 .git-archive/，不在这里重复跟踪
+bak/
+restore/
+.DS_Store
+__pycache__/
+*.pyc
+
+# 以下目录整目录打包进 .git-archive/，不重复跟踪
+/projects/minis-git-backup/
+/projects/project-workspace/
+/projects/quota-usage/
+/projects/skill-generator/
+/skills/minis-git-backup/
