@@ -1,7 +1,7 @@
 ---
 name: minis-git-backup
 description: 备份初始化，远程配置，备份提交，隐私检查，备份下载
-version: 2.0.0
+version: 2.0.1
 triggers: 初始化备份,配置远程,提交备份,检查隐私,下载备份
 ---
 
@@ -41,15 +41,16 @@ triggers: 初始化备份,配置远程,提交备份,检查隐私,下载备份
 python3 /var/minis/skills/minis-git-backup/scripts/backup.py init
 ```
 
-做三件事：写 `.gitignore`（忽略 `projects/`、`skills/`、`restore/`）、`git init`、建 `.`.archives/`。
+做两件事：写 `.gitignore`（只排除 `bak/` 与可重建缓存，其余全部入库）、`git init`。**不建任何归档目录**——v1 的 `.archives/`、`.git-archive/` 都已废弃。
 
 | 输出 | 含义 |
 |---|---|
-| `已创建：.gitignore, .git/, `.archives/` | 本次新建了什么 |
+| `已创建：.gitignore, .git/` | 本次新建了什么 |
 | `仓库已存在：<路径>` | 之前初始化过，继续补缺失项 |
-| `.gitignore 已存在且内容不同，保持不变` | 有人手动改过，不覆盖，需要时自己对齐 |
+| `将更新 .gitignore` | `--dry` 预演：规则与本版不一致，正式执行会改写 |
+| `.gitignore 已是正确内容` | 无需改动 |
 
-`--dry` 只打印将做的动作。
+`--dry` 只打印将做的动作，结尾明说「未写入」。
 
 ## 远程配置
 

@@ -1,6 +1,6 @@
-feat(backup): v2.0.0 备份改名为 .git-backup 跟踪，回验以本地为基准
+fix(backup): v2.0.1 修正 init 预演输出与 v1 文档残留
 
-- 不再打 tar.gz：所有 .git 与子目录 .gitignore 临时改名，git 按普通文件收录，推送后改回
-- 回验克隆远程后以本地为基准逐文件比对，远程缺文件或内容不同判失败
-- 新增 BACKUP_GIT_NO_NETWORK=1 禁 https 推送与还原
-- 测试改真实复制沙箱、默认串行（--jobs 可选），15 项全绿
+- 推送收尾提示 git status 里 .git-backup 显示已删除属正常现象
+- init --dry 不再说「已创建：无」，改为明说未写入
+- 纠正 SKILL.md 里 .archives/ 与「忽略 projects/」的 v1 旧表述
+- 测试 T1 自带过期 .gitignore，不依赖真实挂载当前状态

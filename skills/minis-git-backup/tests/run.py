@@ -223,6 +223,10 @@ def case_init(mount, c):
 
 def case_init_dry(mount, c):
     prepare_repo(mount)
+    # 真实挂载初始化过后自带正确 .gitignore，预演就只会说「已是最新」。
+    # 这里先写一份过期规则（v1 版：按目录排除），让「会更新」这条分支可复现。
+    with open(os.path.join(mount, ".gitignore"), "w", encoding="utf-8") as f:
+        f.write("bak/\nrestore/\n/projects/\n/skills/\n")
     rc, out = run("init --dry", mount)
     return (*check(c["expect"], rc, out, c.get("rc", 0)), out)
 

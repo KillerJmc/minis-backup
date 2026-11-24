@@ -769,6 +769,20 @@ def push_with_check(root, args, hidden):
                    "远程内容不可信，请检查网络与 token 权限后重跑 backup" % note)
 
 
+def note_pending_deletions(root, limit=0):
+    """改名方案的自然后果：索引里记的是 .git-backup 路径，改回 .git 之后
+    这些路径在工作区不存在，git status 会把它们显示成「已删除」。
+    不说清楚，用户会以为备份把仓库弄坏了。"""
+    rc, out, _err = git(root, "status", "--porcelain", check=False)
+    paths = [l for l in out.splitlines() if HIDDEN_GIT in l and l.startswith(" D")]
+    if not paths:
+        return
+    print("提示：git status 会显示 %d 条 %s 路径「已删除」——这是改名方案的自然后果"
+          % (len(paths), HIDDEN_GIT))
+    print("      （索引记的是改名后的路径），不是文件丢失；下次备份开头会自动对齐，"
+          "内容与这次提交完全一致。")
+
+
 def cmd_backup(args, root):
     if not is_repo(root):
         raise Fail("备份仓库还没初始化：先跑 backup.py init", RC_NOT_INIT)
@@ -812,6 +826,7 @@ def cmd_backup(args, root):
     finally:
         unhide_git_dirs(root, hidden)
         print("已恢复 %d 个 %s → .git" % (len(hidden), HIDDEN_GIT))
+        note_pending_deletions(root)
 
     if hits:
         print("脱敏清单（只显示打码后的片段）：")
@@ -853,7 +868,10 @@ def cmd_init(args, root):
     else:
         print("仓库已存在：%s" % root)
 
-    print("已创建：%s" % (", ".join(created) if created else "无（已是最新）"))
+    if args.dry:
+        print("（预演，未写入；去掉 --dry 才真正生效）")
+    else:
+        print("已创建：%s" % (", ".join(created) if created else "无（已是最新）"))
     print("本地仓库就绪；要推送请在本地提交并推送（本技能 backup 命令会自动推送）")
     return RC_OK
 
