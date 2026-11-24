@@ -1,0 +1,52 @@
+0000000000000000000000000000000000000000 9f01844004d34d9519b709416c2fd481f36c44a6 Minis Agent <agent@local> 1795441452 +0800	commit (initial): chore: 建立 skill-generator 工程骨架（技能取自部署产物 v1.2.0）
+9f01844004d34d9519b709416c2fd481f36c44a6 1a6fef399ae68029bbdcc106c4c179f5cf343008 Minis Agent <agent@local> 1795441837 +0800	commit: docs(progress): 记录 v1.2.1 修正
+1a6fef399ae68029bbdcc106c4c179f5cf343008 9b7657d88ad69e07e9f012ec45469de96eff9bcc Minis Agent <agent@local> 1795441911 +0800	commit: docs(progress): 记录 v1.2.2
+9b7657d88ad69e07e9f012ec45469de96eff9bcc 8a4feb2181863830ff88618a59eaaa5a8ce3fc23 Minis Agent <agent@local> 1795441989 +0800	commit: docs(progress): 记录 v1.2.3 commit 格式规范
+8a4feb2181863830ff88618a59eaaa5a8ce3fc23 ac368891153e5541b381a167dcf66b8a931d4d86 Minis Agent <agent@local> 1795442077 +0800	commit: docs(progress): 记录 v1.2.4 Angular 提交规范
+ac368891153e5541b381a167dcf66b8a931d4d86 b78c7146f8eb5fd78ed67d12760967de3abfbbb0 Minis Agent <agent@local> 1795442327 +0800	commit: docs(progress): 记录 v1.3.0 时间点规范
+b78c7146f8eb5fd78ed67d12760967de3abfbbb0 b875c89d297c77c5d0c5b28682935d691ea58c1f Minis Agent <agent@local> 1795442578 +0800	commit: docs(progress): 记录 v1.3.1 双仓库提交触发点
+b875c89d297c77c5d0c5b28682935d691ea58c1f 6f492e31bba01c9b7f8f8dd89c1b9f4ba341d2d1 Minis Agent <agent@local> 1795444889 +0800	commit: chore(tmp): 变更记录草稿 1.0.0–1.4.0
+6f492e31bba01c9b7f8f8dd89c1b9f4ba341d2d1 025c049e9cc02f06d3d075e0cd481dce708190b8 Minis Agent <agent@local> 1795444895 +0800	commit: docs(progress): 记录 1.4.0 待落地内容
+025c049e9cc02f06d3d075e0cd481dce708190b8 3ebac82ea1b3b75167a3376685a7da9bf71ac598 Minis Agent <agent@local> 1795444923 +0800	commit: chore(tmp): 补授权分层条目
+3ebac82ea1b3b75167a3376685a7da9bf71ac598 c8e7dccc3367d172b5b444fd5d216b1bdcb7681e Minis Agent <agent@local> 1795444975 +0800	commit: chore(tmp): 变更记录剔除测试类内容
+c8e7dccc3367d172b5b444fd5d216b1bdcb7681e 5c5d9a4afd3d830413fe5ab701b591fd4392f902 Minis Agent <agent@local> 1795445055 +0800	commit: chore(tmp): 补讨论产出落点与 docs 沉淀规则
+5c5d9a4afd3d830413fe5ab701b591fd4392f902 79f5e5913802170388b23a16da081b3e2bc40fb3 Minis Agent <agent@local> 1795445061 +0800	commit: docs(progress): 待办补落点规则
+79f5e5913802170388b23a16da081b3e2bc40fb3 d4640d236ac750648c591a69dda1551e97d0a48b Minis Agent <agent@local> 1795445148 +0800	commit: chore(temp): 临时目录由 .tmp 改名为 temp
+d4640d236ac750648c591a69dda1551e97d0a48b efad05caf9c2e810f8352512a6467508a97b4daf Minis Agent <agent@local> 1795445166 +0800	commit: docs(temp): 工程文档同步临时目录改名
+efad05caf9c2e810f8352512a6467508a97b4daf ce8f5458b8f4fdfe79f5843d6f14449747c2675f Minis Agent <agent@local> 1795445377 +0800	commit: docs(progress): 记录 v1.4.0
+ce8f5458b8f4fdfe79f5843d6f14449747c2675f 90fe5f5d792e336b9752f91381296c59865ce3fb Minis Agent <agent@local> 1795445893 +0800	commit: docs(progress): v1.5.0 已提交未上线
+90fe5f5d792e336b9752f91381296c59865ce3fb ce8f5458b8f4fdfe79f5843d6f14449747c2675f Minis Agent <agent@local> 1795445961 +0800	reset: moving to HEAD~1
+ce8f5458b8f4fdfe79f5843d6f14449747c2675f ce8f5458b8f4fdfe79f5843d6f14449747c2675f Minis Agent <agent@local> 1795445961 +0800	reset: moving to HEAD
+ce8f5458b8f4fdfe79f5843d6f14449747c2675f cb8f0e83e3007cf599b5081c49af75c417a24a28 Minis Agent <agent@local> 1795445980 +0800	commit: docs(progress): v1.5.0 已改未提交未上线
+cb8f0e83e3007cf599b5081c49af75c417a24a28 ce61e4d3fd7a65f09b576a0d4cc4c89283076521 Minis Agent <agent@local> 1795446048 +0800	commit: docs(progress): 补记 checklist 三条
+ce61e4d3fd7a65f09b576a0d4cc4c89283076521 759660d139df82fe4d175b32a43ca48a69a7453c Minis Agent <agent@local> 1795446972 +0800	commit: docs(progress): v1.6.0 技能规范已改未提交
+759660d139df82fe4d175b32a43ca48a69a7453c bc087e8f81096efcffa0cde3960e5f4a614120fb Minis Agent <agent@local> 1795447279 +0800	commit: docs(progress): 补记测试用例已写未跑
+bc087e8f81096efcffa0cde3960e5f4a614120fb 5995668fceda554a77826243598c73c268a1e739 Minis Agent <agent@local> 1795447472 +0800	commit: docs(progress): 记录 normalize 试跑结果
+5995668fceda554a77826243598c73c268a1e739 e14ced3f44c512a4a8383cd19b090a75677500a2 Minis Agent <agent@local> 1795447617 +0800	commit: docs(progress): v1.6.0 已上线
+e14ced3f44c512a4a8383cd19b090a75677500a2 5995668fceda554a77826243598c73c268a1e739 Minis Agent <agent@local> 1795447836 +0800	reset: moving to 5995668
+5995668fceda554a77826243598c73c268a1e739 5995668fceda554a77826243598c73c268a1e739 Minis Agent <agent@local> 1795447836 +0800	reset: moving to HEAD
+5995668fceda554a77826243598c73c268a1e739 be6b506e80ee6474334cfc7aca490b43b6142415 Minis Agent <agent@local> 1795447858 +0800	commit: docs(progress): 撤销 v1.6.0 发布，退回未提交状态
+be6b506e80ee6474334cfc7aca490b43b6142415 7e7f4ef846fb8d65a607d32b8c78c7187d2e19a0 Minis Agent <agent@local> 1795448235 +0800	commit: docs(progress): 补发布两轮制与撤销规则
+7e7f4ef846fb8d65a607d32b8c78c7187d2e19a0 7d7d6068be855fe976845e39a0dea00376915ba5 Minis Agent <agent@local> 1795448392 +0800	commit: docs(progress): 撤销与回滚按同一件事重写
+7d7d6068be855fe976845e39a0dea00376915ba5 75ae6cbda52b2bbefa144addafe3f89cf16536ef Minis Agent <agent@local> 1795448483 +0800	commit: docs(progress): 撤销命令序列定稿并验证
+75ae6cbda52b2bbefa144addafe3f89cf16536ef d9199e7fc32a4f480f28b1952365853965bdef77 Minis Agent <agent@local> 1795448556 +0800	commit: docs(progress): 补丢弃修改命令与 temp 保护
+d9199e7fc32a4f480f28b1952365853965bdef77 00e1a2c54fb7c520bcd7fdffe0656a68ff37ae81 Minis Agent <agent@local> 1795448929 +0800	commit: docs(progress): 功能表补关键词，清理草稿
+00e1a2c54fb7c520bcd7fdffe0656a68ff37ae81 173a24202e0bbd67f8041b357d37b650fa6aeeed Minis Agent <agent@local> 1795449157 +0800	commit: docs(progress): 变更记录改为按功能点分组
+173a24202e0bbd67f8041b357d37b650fa6aeeed dd60ca4a6059f0a1d31c36500e5627270aa282bb Minis Agent <agent@local> 1795449275 +0800	commit: docs(progress): 补测试时机条目
+dd60ca4a6059f0a1d31c36500e5627270aa282bb 7b548e067b4a15a676cf83a0da267bbe9253d9c6 Minis Agent <agent@local> 1795449784 +0800	commit: docs(progress): 发布确认格式定稿
+7b548e067b4a15a676cf83a0da267bbe9253d9c6 11274628aac368240bf357b6988246db2c5187fd Minis Agent <agent@local> 1795449978 +0800	commit: docs(progress): 补发布后汇报要求
+11274628aac368240bf357b6988246db2c5187fd 0c2f4af37dfe862d8d9b31f7a6bb53cfce795cd1 Minis Agent <agent@local> 1795450544 +0800	commit: docs(progress): 补确认生效条件与提交前回查
+0c2f4af37dfe862d8d9b31f7a6bb53cfce795cd1 68223fa3981d44ab0827bb8f9522e5bce0811787 Minis Agent <agent@local> 1795450667 +0800	commit: docs(progress): 补进入发布的时机
+68223fa3981d44ab0827bb8f9522e5bce0811787 be0d438ef5a73611c15c504d46c010bda3d0c23e Minis Agent <agent@local> 1795450788 +0800	commit: docs(progress): v1.6.0 已上线
+be0d438ef5a73611c15c504d46c010bda3d0c23e 2981f824900f9360fa2a35e6e4f4ca49ef559208 Minis Agent <agent@local> 1795451254 +0800	commit: docs(progress): v1.6.1 分组规范对齐
+2981f824900f9360fa2a35e6e4f4ca49ef559208 dde155bdebb9a0a152921513a6060b4d6dd9faed Minis Agent <agent@local> 1795451342 +0800	commit: docs(progress): v1.6.1 已上线
+dde155bdebb9a0a152921513a6060b4d6dd9faed 729e9f35a0e2b7f5c3e566240c7a2de89a664557 Minis Agent <agent@local> 1795493437 +0800	commit: docs(progress): v1.6.2 已上线，记录产物
+729e9f35a0e2b7f5c3e566240c7a2de89a664557 cbfd510924985124fe620f5c2fde6eda3568fe32 Minis Agent <agent@local> 1795493446 +0800	commit: chore(deploy): 同步模板，支持打包与挂载检查
+cbfd510924985124fe620f5c2fde6eda3568fe32 6ae3ffc804f77f2710ffac1613e28eddcbc234d4 Minis Agent <agent@local> 1795493944 +0800	commit: docs(progress): v1.6.3 已上线，产物目录改名
+6ae3ffc804f77f2710ffac1613e28eddcbc234d4 804edd984448dec87ed634bc1136e1846a80d7f6 Minis Agent <agent@local> 1795494627 +0800	commit: docs(progress): v1.6.4 已上线，归档位置修正
+804edd984448dec87ed634bc1136e1846a80d7f6 776666659cd6833f49103ed123d5c25cd14bf944 Minis Agent <agent@local> 1795497920 +0800	commit: chore: 去除自建 WORKFLOW.md 与 deploy.py 副本
+776666659cd6833f49103ed123d5c25cd14bf944 51b2ef27c43baf483a9f630ffeafaba8e104027c Minis Agent <agent@local> 1795498258 +0800	commit: docs(progress): v1.8.0 已上线
+51b2ef27c43baf483a9f630ffeafaba8e104027c 90ba6fa6f250ce40478a529c406e78e6d2c0a1ba Minis Agent <agent@local> 1795498554 +0800	commit: docs(progress): v1.8.1 已上线
+90ba6fa6f250ce40478a529c406e78e6d2c0a1ba f1d6c9d10c69f743718594a99ed7a8dae5766344 Minis Agent <agent@local> 1795502535 +0800	commit: fix(gitignore): 只排除技能目录，其余一律入库
+f1d6c9d10c69f743718594a99ed7a8dae5766344 f02b22eeea10e0d45827e2adb0a57eb536f18155 Minis Agent <agent@local> 1795512005 +0800	commit: docs(progress): v1.8.2 已上线
+f02b22eeea10e0d45827e2adb0a57eb536f18155 f68f4e3f8cef504ae5d0cd6d5fab409cc0c522ee Minis Agent <agent@local> 1795513279 +0800	commit: docs(progress): v1.8.3 已上线

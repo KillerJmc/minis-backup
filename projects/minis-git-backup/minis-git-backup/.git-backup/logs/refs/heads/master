@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 299361dbd4d66c8c00d2b963d08cca2d931ff02d Minis Agent <agent@local> 1795498710 +0800	commit (initial): feat: minis-git-backup v1.6.0 基线（19 项测试全绿）
+299361dbd4d66c8c00d2b963d08cca2d931ff02d 4d3ecba8b72d18de1be5a8a3fb21a1002d118b6d Minis Agent <agent@local> 1795505699 +0800	commit: feat: minis-git-backup v1.0.0 首次发布（20 项测试全绿）
+4d3ecba8b72d18de1be5a8a3fb21a1002d118b6d 3509cfc48073ed1bf9bcb54f0a6fac96a18c228c Minis Agent <agent@local> 1795516281 +0800	commit: release(minis-git-backup): v1.1.0
+3509cfc48073ed1bf9bcb54f0a6fac96a18c228c d927d1a805d9ba0b3fed19db653a578b3f55fc64 Minis Agent <agent@local> 1795518093 +0800	commit: release(minis-git-backup): v1.1.0
+d927d1a805d9ba0b3fed19db653a578b3f55fc64 6345e17fe088861ff4e69c39ea7633b432b8451d Minis <a@b> 1795544840 +0800	commit: feat(backup): v2.0.0 备份改名为 .git-backup 跟踪，回验以本地为基准

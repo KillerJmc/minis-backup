@@ -1,0 +1,23 @@
+0000000000000000000000000000000000000000 b8d1e2953d2e14d91195aca577e04cbdb5338f77 Minis Agent <agent@local> 1795441447 +0800	commit (initial): feat: skill-generator v1.2.0 基线（23 项测试全绿）
+b8d1e2953d2e14d91195aca577e04cbdb5338f77 7fbccb6836f085b7a6c706fa886c065ae3c91553 Minis Agent <agent@local> 1795441814 +0800	commit: docs(layout): 修正 .gitignore 与 tests 描述，补验证过的忽略模板
+7fbccb6836f085b7a6c706fa886c065ae3c91553 ba848257332d2058ce464e5e645dfc9defd42222 Minis Agent <agent@local> 1795441892 +0800	commit: docs(git): 补内外两仓库的 commit 规定与提交顺序
+ba848257332d2058ce464e5e645dfc9defd42222 06b1c95bebb4c207bdafcca06112b0f5e799a595 Minis Agent <agent@local> 1795441974 +0800	commit: docs(git): 明确 commit message 的 <类型>(<范围>): <描述> 格式
+06b1c95bebb4c207bdafcca06112b0f5e799a595 2de9193ce5b435f4004dc47c9720845640119ccb Minis Agent <agent@local> 1795442062 +0800	commit: docs(git): 明确采用 Angular 提交规范并给出类型子集
+2de9193ce5b435f4004dc47c9720845640119ccb 8f0f0575e0c95bba25e85c2c6b4e00e6cbef5577 Minis Agent <agent@local> 1795442315 +0800	commit: feat(layout): 补记录与提交的时间点表及可选文件处理
+8f0f0575e0c95bba25e85c2c6b4e00e6cbef5577 78b0e4e073cba9c8e2c8c8cf1b8fdf99b439dd32 Minis Agent <agent@local> 1795442561 +0800	commit: docs(git): 按仓库分开规定 commit 触发点与对齐规则
+78b0e4e073cba9c8e2c8c8cf1b8fdf99b439dd32 4e3de2214f4fe7d79b621a98ba576de420ce2f97 Minis Agent <agent@local> 1795445356 +0800	commit: feat(changelog): 变更记录成为必带文件并纳入校验
+4e3de2214f4fe7d79b621a98ba576de420ce2f97 dd72437a2e89784dd48a31d9b74682c13809601f Minis Agent <agent@local> 1795445886 +0800	commit: feat(rules): 修改与发布分开，发布前再确认变更记录
+dd72437a2e89784dd48a31d9b74682c13809601f 4e3de2214f4fe7d79b621a98ba576de420ce2f97 Minis Agent <agent@local> 1795445961 +0800	reset: moving to HEAD~1
+4e3de2214f4fe7d79b621a98ba576de420ce2f97 f8e5b56c01e0e4b9d09eaa44787612d940595122 Minis Agent <agent@local> 1795447561 +0800	commit: feat(normalize): 新增技能规范功能，修改与发布分离
+f8e5b56c01e0e4b9d09eaa44787612d940595122 4e3de2214f4fe7d79b621a98ba576de420ce2f97 Minis Agent <agent@local> 1795447767 +0800	reset: moving to 4e3de22
+4e3de2214f4fe7d79b621a98ba576de420ce2f97 d01c2099b84f967d78645aa1a05f7c257763a503 Minis Agent <agent@local> 1795450272 +0800	commit: feat(normalize): 新增技能规范，发布与撤销流程成文
+d01c2099b84f967d78645aa1a05f7c257763a503 4e3de2214f4fe7d79b621a98ba576de420ce2f97 Minis Agent <agent@local> 1795450318 +0800	reset: moving to HEAD~1
+4e3de2214f4fe7d79b621a98ba576de420ce2f97 d4c8d703f3131c15577847edffacc8b3a8f92bec Minis Agent <agent@local> 1795450751 +0800	commit: feat(normalize): 新增技能规范，发布与撤销流程成文
+d4c8d703f3131c15577847edffacc8b3a8f92bec 1b3244e83e2030f59e78348c94b714774aec78f1 Minis Agent <agent@local> 1795451300 +0800	commit: docs(changelog): 分组规范对齐功能点写法
+1b3244e83e2030f59e78348c94b714774aec78f1 dc6faefd4970463e37f1811a330fddbb0144954f Minis Agent <agent@local> 1795493355 +0800	commit: feat(dist): 发布时打包产物并归档旧版
+dc6faefd4970463e37f1811a330fddbb0144954f 48788554d2b5f510b721072b61f735f142ca2641 Minis Agent <agent@local> 1795493846 +0800	commit: chore(dist): 产物目录改名为 skills-dist
+48788554d2b5f510b721072b61f735f142ca2641 3e7b387a825489b96988b689da868358b642ff79 Minis Agent <agent@local> 1795494547 +0800	commit: fix(dist): 归档目录移入 skills-dist 内
+3e7b387a825489b96988b689da868358b642ff79 31fe722caa805ef1ceecedc2c33f17683ff1f916 Minis Agent <agent@local> 1795498183 +0800	commit: feat(workflow): 工程层不再自建 WORKFLOW 与 deploy 副本
+31fe722caa805ef1ceecedc2c33f17683ff1f916 e16325537697d36ed66a1379a1b26f1103953a4a Minis Agent <agent@local> 1795498491 +0800	commit: fix(deploy): 删除空目录，assets 改为可选
+e16325537697d36ed66a1379a1b26f1103953a4a fcf1b9ff3c00eea62d0b097a7b9a0588be76cb90 Minis Agent <agent@local> 1795511773 +0800	commit: release(skill-generator): v1.8.2
+fcf1b9ff3c00eea62d0b097a7b9a0588be76cb90 220022ebc61de39cbe2d981fad37bd3035f2bbe5 Minis Agent <agent@local> 1795513182 +0800	commit: release(skill-generator): v1.8.3

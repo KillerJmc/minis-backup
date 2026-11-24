@@ -1,0 +1,6 @@
+feat(backup): v2.0.0 备份改名为 .git-backup 跟踪，回验以本地为基准
+
+- 不再打 tar.gz：所有 .git 与子目录 .gitignore 临时改名，git 按普通文件收录，推送后改回
+- 回验克隆远程后以本地为基准逐文件比对，远程缺文件或内容不同判失败
+- 新增 BACKUP_GIT_NO_NETWORK=1 禁 https 推送与还原
+- 测试改真实复制沙箱、默认串行（--jobs 可选），15 项全绿

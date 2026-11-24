@@ -1,0 +1,9 @@
+0000000000000000000000000000000000000000 aee18fe643c867c79e21e3c51bd62e02aff29a74 Minis Agent <agent@local> 1795498722 +0800	commit (initial): chore: 建立 minis-git-backup 工程骨架与设计记录
+aee18fe643c867c79e21e3c51bd62e02aff29a74 ddc48d69264bcb4fc6813d3cb13549ab68bac342 Minis Agent <agent@local> 1795498772 +0800	commit: docs(progress): 记录两仓库初始化与待上线状态
+ddc48d69264bcb4fc6813d3cb13549ab68bac342 6ef92e7b042dc90513caeb56d1a87b7354de7a45 Minis Agent <agent@local> 1795500862 +0800	commit: docs(progress): 版本号重编为 v1.0.0 首次发布基线
+6ef92e7b042dc90513caeb56d1a87b7354de7a45 ce8dfe5f4ab443f2f57666b32dbf9ea255f112dd Minis Agent <agent@local> 1795505989 +0800	commit: docs(progress): v1.0.0 已上线，20 项测试全绿
+ce8dfe5f4ab443f2f57666b32dbf9ea255f112dd 4fd27887c7fe929a7f46d9a3d9c8cef212d13a0d Minis Agent <agent@local> 1795505999 +0800	commit: docs(project): 补 .gitignore 打包条件与 bak 设计决定
+4fd27887c7fe929a7f46d9a3d9c8cef212d13a0d 154a1a20fcf1fcf2d2f69172f919023c42e9c65e Minis Agent <agent@local> 1795511302 +0800	commit: docs(progress): 标注仍在编写中，暂不纳入批量测试
+154a1a20fcf1fcf2d2f69172f919023c42e9c65e 6048462c73892284632c7c566ff7bb3a6b162ebb Minis Agent <agent@local> 1795513800 +0800	commit: docs(project): 记录 v1.1.0 改中状态与还原前置判断
+6048462c73892284632c7c566ff7bb3a6b162ebb 55d77093e92948ccc3ea5cb19ab475b4ba72b28e Minis Agent <agent@local> 1795518649 +0800	commit: docs(progress): v1.1.0 已上线，22 项测试全绿
+55d77093e92948ccc3ea5cb19ab475b4ba72b28e e5998901f35177478c483278ff43fc99efa477f0 Minis <a@b> 1795545338 +0800	commit: docs(progress): v2.0.0 已上线，测试 15 项全绿

@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.DS_Store
+
+# 技能目录各自是独立 git 仓库，不纳入工程仓库
+/quota-usage/

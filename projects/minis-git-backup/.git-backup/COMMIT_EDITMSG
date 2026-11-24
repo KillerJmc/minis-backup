@@ -1,0 +1,5 @@
+docs(progress): v2.0.0 已上线，测试 15 项全绿
+
+- PROJECT.md 关键决定换成改名机制，补 docs/git-backup-rename-design.md 引用
+- 新增 docs/git-backup-rename-design.md：为什么放弃 tar.gz、ignore 改名、回验方向
+- PROGRESS.md 记录 v2.0.0 时间线与遗留，清掉 temp/ 旧设计稿

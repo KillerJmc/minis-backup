@@ -1,0 +1,5922 @@
+{
+ "version": 1,
+ "note": "数据驱动用例。setup 路径相对沙箱根；断言见 run.py 的 check()。",
+ "cases": [
+  {
+   "id": "A1",
+   "group": "A",
+   "name": "无挂载 bootstrap → rc=3",
+   "mount": "none",
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap"
+     ],
+     "rc": 3,
+     "user": "初始化一下工作区"
+    }
+   ]
+  },
+  {
+   "id": "A2",
+   "group": "A",
+   "name": "无挂载 sync → rc=3",
+   "mount": "none",
+   "turns": [
+    {
+     "cmd": [
+      "sync"
+     ],
+     "rc": 3,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "A3",
+   "group": "A",
+   "name": "无挂载 list → rc=3",
+   "mount": "none",
+   "turns": [
+    {
+     "cmd": [
+      "list"
+     ],
+     "rc": 3,
+     "user": "我有哪些项目？"
+    }
+   ]
+  },
+  {
+   "id": "A4",
+   "group": "A",
+   "name": "无挂载 which → rc=3",
+   "mount": "none",
+   "turns": [
+    {
+     "cmd": [
+      "which"
+     ],
+     "rc": 3,
+     "user": "我现在在哪个项目里？"
+    }
+   ]
+  },
+  {
+   "id": "A5",
+   "group": "A",
+   "name": "无挂载 new → rc=3",
+   "mount": "none",
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      "x"
+     ],
+     "rc": 3,
+     "user": "新建一个项目，叫「x」"
+    }
+   ]
+  },
+  {
+   "id": "A6",
+   "group": "A",
+   "name": "无挂载 migrate → rc=3",
+   "mount": "none",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 3,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "A7",
+   "group": "A",
+   "name": "唯一挂载名非 Minis → 采用",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Other"
+    }
+   ],
+   "mount": "Other",
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap"
+     ],
+     "rc": 0,
+     "has": [
+      "Other"
+     ],
+     "user": "初始化一下工作区"
+    }
+   ]
+  },
+  {
+   "id": "A8",
+   "group": "A",
+   "name": "多挂载无 Minis → rc=3",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/A"
+    },
+    {
+     "type": "dir",
+     "path": "mounts/B"
+    }
+   ],
+   "mount": "none",
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap"
+     ],
+     "rc": 3,
+     "has": [
+      "没有找到外部挂载"
+     ],
+     "user": "初始化一下工作区"
+    }
+   ]
+  },
+  {
+   "id": "A9",
+   "group": "A",
+   "name": "多挂载优先 Minis",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/A"
+    },
+    {
+     "type": "dir",
+     "path": "mounts/Minis"
+    }
+   ],
+   "mount": "none",
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap"
+     ],
+     "rc": 0,
+     "has": [
+      "/Minis"
+     ],
+     "user": "初始化一下工作区"
+    }
+   ]
+  },
+  {
+   "id": "A10",
+   "group": "A",
+   "name": "bootstrap 建 projects/ 与 skills/",
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects"
+    ],
+    [
+     "dir",
+     "mounts/Minis/skills"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap"
+     ],
+     "rc": 0,
+     "user": "初始化一下工作区"
+    }
+   ]
+  },
+  {
+   "id": "A11",
+   "group": "A",
+   "name": "bootstrap 幂等",
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap"
+     ],
+     "rc": 0,
+     "user": "初始化一下工作区"
+    },
+    {
+     "cmd": [
+      "bootstrap"
+     ],
+     "rc": 0,
+     "user": "然后呢？"
+    }
+   ]
+  },
+  {
+   "id": "A12",
+   "group": "A",
+   "name": "bootstrap --json 合法",
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap",
+      "--json"
+     ],
+     "rc": 0,
+     "has": [
+      "\"projects\""
+     ],
+     "user": "初始化一下工作区"
+    }
+   ]
+  },
+  {
+   "id": "A13",
+   "group": "A",
+   "name": "projects 被文件占据 → rc=1",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects",
+     "content": "x"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap"
+     ],
+     "rc": 1,
+     "has": [
+      "被文件占据"
+     ],
+     "user": "初始化一下工作区"
+    }
+   ]
+  },
+  {
+   "id": "B1",
+   "group": "B",
+   "name": "未分组 → 不建工程",
+   "assert": [
+    [
+     "absent",
+     "mounts/Minis/projects"
+    ]
+   ],
+   "session_group": "",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "未分组"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "B2",
+   "group": "B",
+   "name": "新分组 → 建空目录并绑定",
+   "assert": [
+    [
+     "empty",
+     "mounts/Minis/projects/工程甲"
+    ],
+    [
+     "link",
+     "工程甲"
+    ]
+   ],
+   "session_group": "工程甲",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "已创建工程"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "B3",
+   "group": "B",
+   "name": "已有工程 → 保留内容并列出",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/工程乙/keep.txt",
+     "content": "k"
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/工程乙/keep.txt",
+     "k"
+    ]
+   ],
+   "session_group": "工程乙",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "keep.txt"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "B4",
+   "group": "B",
+   "name": "空目录标 (空)",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/工程丙/sub"
+    }
+   ],
+   "session_group": "工程丙",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "sub/  ·  空"
+     ],
+     "user": "你好",
+     "reply_has": [
+      "sub/  ·  空"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "B5",
+   "group": "B",
+   "name": "大文件用 MB 显示",
+   "setup": [
+    {
+     "type": "bytes",
+     "path": "mounts/Minis/projects/工程丁/big.bin",
+     "size": 3145728
+    }
+   ],
+   "assert": [
+    [
+     "file",
+     "mounts/Minis/projects/工程丁/big.bin"
+    ]
+   ],
+   "session_group": "工程丁",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "3.0 MB"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "B6",
+   "group": "B",
+   "name": "目录列举只到 2 层",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/工程戊/sub/deep/deep.txt",
+     "content": "x"
+    }
+   ],
+   "session_group": "工程戊",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "sub/  ·  1 项"
+     ],
+     "hasnt": [
+      "deep.txt"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "B7",
+   "group": "B",
+   "name": "auto --json 字段完整",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/工程己/a.txt",
+     "content": "a"
+    }
+   ],
+   "session_group": "工程己",
+   "turns": [
+    {
+     "cmd": [
+      "auto",
+      "--json"
+     ],
+     "rc": 0,
+     "has": [
+      "\"contents\"",
+      "\"group\""
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "B8",
+   "group": "B",
+   "name": "分组名含 / → rc=2",
+   "assert": [
+    [
+     "absent",
+     "mounts/Minis/projects/a"
+    ]
+   ],
+   "session_group": "a/b",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 2,
+     "has": [
+      "不能直接当工程名"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "B9",
+   "group": "B",
+   "name": "分组名以 . 开头 → rc=2",
+   "assert": [
+    [
+     "absent",
+     "mounts/Minis/projects/.hidden"
+    ]
+   ],
+   "session_group": ".hidden",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 2,
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "B10",
+   "group": "B",
+   "name": "CLI 不可用 → rc=1",
+   "no_cli": true,
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 1,
+     "has": [
+      "minis-sessions-cli"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "B11",
+   "group": "B",
+   "name": "已有工程不被清空",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/工程庚/1.txt",
+     "content": "1"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/工程庚/2.txt",
+     "content": "2"
+    }
+   ],
+   "assert": [
+    [
+     "count",
+     "mounts/Minis/projects/工程庚",
+     "2"
+    ]
+   ],
+   "session_group": "工程庚",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "B12",
+   "group": "B",
+   "name": "auto 后 link 指向分组",
+   "assert": [
+    [
+     "link",
+     "工程辛"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/工程辛"
+    ]
+   ],
+   "session_group": "工程辛",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "C1",
+   "group": "C",
+   "name": "auto 发现不一致 → hint + prev 落盘",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "chat/.project-prev",
+     "旧名"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "migrate",
+      "旧名",
+      "新名"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "C2",
+   "group": "C",
+   "name": "零参数迁移：文件复制、旧工程保留",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/sub/b.txt",
+     "content": "b"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/a.txt",
+     "a"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/sub/b.txt",
+     "b"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "已复制"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C3",
+   "group": "C",
+   "name": "零参数迁移后 link=新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "link",
+     "新名"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C4",
+   "group": "C",
+   "name": "迁移后 prev 清理",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "新名",
+   "prev": "旧名",
+   "assert": [
+    [
+     "noprev"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C5",
+   "group": "C",
+   "name": "已同名再迁移 → rc=0 无需迁移",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/同名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "同名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/同名/a.txt",
+     "a"
+    ]
+   ],
+   "session_group": "同名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "无需迁移"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C6",
+   "group": "C",
+   "name": "目标已存在无冲突 → 合并",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/n.txt",
+     "content": "n"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/a.txt",
+     "a"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/n.txt",
+     "n"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "合并"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C7",
+   "group": "C",
+   "name": "同名同内容也算冲突 → rc=1",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/same.txt",
+     "content": "S"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/only.txt",
+     "content": "o"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/same.txt",
+     "content": "S"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/旧名/only.txt",
+     "o"
+    ],
+    [
+     "absent",
+     "mounts/Minis/projects/新名/only.txt"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "has": [
+      "冲突"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C8",
+   "group": "C",
+   "name": "同名不同内容 → rc=1 零改动",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/c.txt",
+     "content": "OLD"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/c.txt",
+     "content": "NEW"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/旧名/c.txt",
+     "OLD"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/c.txt",
+     "NEW"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "has": [
+      "冲突"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C9",
+   "group": "C",
+   "name": "同名目录内文件冲突 → rc=1",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/d/a.txt",
+     "content": "a"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/d/a.txt",
+     "content": "b"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/旧名/d/a.txt",
+     "a"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/d/a.txt",
+     "b"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "has": [
+      "冲突"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C10",
+   "group": "C",
+   "name": "文件与目录同名 → rc=1",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/x/f.txt",
+     "content": "f"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/x",
+     "content": "i am a file"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "file",
+     "mounts/Minis/projects/新名/x"
+    ],
+    [
+     "file",
+     "mounts/Minis/projects/旧名/x/f.txt"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "has": [
+      "冲突"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C11",
+   "group": "C",
+   "name": "中止后旧目录文件数不变",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f0.txt",
+     "content": "0"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f1.txt",
+     "content": "1"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f2.txt",
+     "content": "2"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f3.txt",
+     "content": "3"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f4.txt",
+     "content": "4"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/dup.txt",
+     "content": "D"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/dup.txt",
+     "content": "D"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "count",
+     "mounts/Minis/projects/旧名",
+     "6"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "has": [
+      "冲突"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C12",
+   "group": "C",
+   "name": "--dry 只预演不动盘",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/旧名/a.txt",
+     "a"
+    ],
+    [
+     "absent",
+     "mounts/Minis/projects/新名"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "--dry"
+     ],
+     "rc": 0,
+     "has": [
+      "预演"
+     ],
+     "user": "把「--dry」改成新名字"
+    }
+   ]
+  },
+  {
+   "id": "C13",
+   "group": "C",
+   "name": "--dry 遇冲突 → rc=1",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/c.txt",
+     "content": "A"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/c.txt",
+     "content": "B"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "count",
+     "mounts/Minis/projects/旧名",
+     "1"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "--dry"
+     ],
+     "rc": 1,
+     "has": [
+      "冲突"
+     ],
+     "user": "把「--dry」改成新名字"
+    }
+   ]
+  },
+  {
+   "id": "C14",
+   "group": "C",
+   "name": "link 已是新名 → 用 prev 找旧名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "新名",
+   "prev": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/a.txt",
+     "a"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C15",
+   "group": "C",
+   "name": "无旧线索 → 按旧无创建空工程",
+   "session_group": "新名",
+   "turns": [
+    {
+     "user": "我改了项目名了",
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "没有旧工程线索",
+      "已创建空工程"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/新名"
+    ]
+   ]
+  },
+  {
+   "id": "C16",
+   "group": "C",
+   "name": "无分组名 → rc=2",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "旧名",
+   "session_group": "",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 2,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C17",
+   "group": "C",
+   "name": "显式两参数迁移",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/甲/z.txt",
+     "content": "z"
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/乙/z.txt",
+     "z"
+    ]
+   ],
+   "session_group": "",
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "甲",
+      "乙"
+     ],
+     "rc": 0,
+     "user": "把「甲」并到「乙」"
+    }
+   ]
+  },
+  {
+   "id": "C18",
+   "group": "C",
+   "name": "单参数：旧名取 link",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/丙/p.txt",
+     "content": "p"
+    }
+   ],
+   "link": "丙",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/丁/p.txt",
+     "p"
+    ]
+   ],
+   "session_group": "",
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "丁"
+     ],
+     "rc": 0,
+     "user": "把「丁」改成新名字"
+    }
+   ]
+  },
+  {
+   "id": "C19",
+   "group": "C",
+   "name": "显式新旧同名 → rc=2",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/丁"
+    }
+   ],
+   "session_group": "",
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "丁",
+      "丁"
+     ],
+     "rc": 2,
+     "user": "把「丁」并到「丁」"
+    }
+   ]
+  },
+  {
+   "id": "C20",
+   "group": "C",
+   "name": "非法新名 ../逃逸 → rc=2",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/丁"
+    }
+   ],
+   "assert": [
+    [
+     "absent",
+     "mounts/逃逸"
+    ]
+   ],
+   "session_group": "",
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "丁",
+      "../x"
+     ],
+     "rc": 2,
+     "user": "把「丁」并到「../x」"
+    }
+   ]
+  },
+  {
+   "id": "C21",
+   "group": "C",
+   "name": "旧工程不存在 → 建空新工程（不复制）",
+   "session_group": "",
+   "turns": [
+    {
+     "user": "迁移一个不存在的工程",
+     "cmd": [
+      "migrate",
+      "不存在",
+      "任意"
+     ],
+     "rc": 0,
+     "has": [
+      "已创建空工程"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/任意"
+    ]
+   ]
+  },
+  {
+   "id": "C22",
+   "group": "C",
+   "name": "目标被文件占据 → rc=1",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧/a.txt",
+     "content": "a"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/被占",
+     "content": "file"
+    }
+   ],
+   "session_group": "",
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "旧",
+      "被占"
+     ],
+     "rc": 1,
+     "user": "把「旧」并到「被占」"
+    }
+   ]
+  },
+  {
+   "id": "C23",
+   "group": "C",
+   "name": "多文件+多级子目录完整搬迁",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a/b/c.txt",
+     "content": "c"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/d.txt",
+     "content": "d"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/a/b/c.txt",
+     "c"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/d.txt",
+     "d"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "C24",
+   "group": "C",
+   "name": "中止时 link 不被改写",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/c.txt",
+     "content": "A"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/c.txt",
+     "content": "B"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "link",
+     "旧名"
+    ]
+   ],
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "D1",
+   "group": "D",
+   "name": "新建空目录并绑定",
+   "assert": [
+    [
+     "empty",
+     "mounts/Minis/projects/工程一"
+    ],
+    [
+     "link",
+     "工程一"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      "工程一"
+     ],
+     "rc": 0,
+     "has": [
+      "已创建"
+     ],
+     "user": "新建一个项目，叫「工程一」"
+    }
+   ]
+  },
+  {
+   "id": "D2",
+   "group": "D",
+   "name": "重名 → rc=1 不覆盖",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/工程一/data.txt",
+     "content": "keep"
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/工程一/data.txt",
+     "keep"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      "工程一"
+     ],
+     "rc": 1,
+     "has": [
+      "已存在"
+     ],
+     "user": "新建一个项目，叫「工程一」"
+    }
+   ]
+  },
+  {
+   "id": "D3",
+   "group": "D",
+   "name": "非法名 ../evil → rc=2",
+   "assert": [
+    [
+     "absent",
+     "mounts/evil"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      "../evil"
+     ],
+     "rc": 2,
+     "user": "新建一个项目，叫「../evil」"
+    }
+   ]
+  },
+  {
+   "id": "D4",
+   "group": "D",
+   "name": "非法名 a/b → rc=2",
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      "a/b"
+     ],
+     "rc": 2,
+     "user": "新建一个项目，叫「a/b」"
+    }
+   ]
+  },
+  {
+   "id": "D5",
+   "group": "D",
+   "name": "link 不存在的工程 → 建空目录并关联",
+   "turns": [
+    {
+     "user": "切到还没建过的工程吧",
+     "cmd": [
+      "link",
+      "查无此工程"
+     ],
+     "rc": 0,
+     "has": [
+      "已创建并关联"
+     ],
+     "reply_has": [
+      "已创建"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/查无此工程"
+    ],
+    [
+     "link",
+     "查无此工程"
+    ]
+   ]
+  },
+  {
+   "id": "D6",
+   "group": "D",
+   "name": "new 后 auto 不重建",
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/工程三"
+    ],
+    [
+     "link",
+     "工程三"
+    ]
+   ],
+   "session_group": "工程三",
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      "工程三"
+     ],
+     "rc": 0,
+     "user": "新建一个项目，叫「工程三」"
+    },
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "user": "然后呢？"
+    }
+   ]
+  },
+  {
+   "id": "E1",
+   "group": "E",
+   "name": "关联已存在工程",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/工程二"
+    }
+   ],
+   "assert": [
+    [
+     "link",
+     "工程二"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "link",
+      "工程二"
+     ],
+     "rc": 0,
+     "user": "切换到「工程二」工程"
+    }
+   ]
+  },
+  {
+   "id": "E2",
+   "group": "E",
+   "name": "link 不存在 → 建目录并绑定",
+   "turns": [
+    {
+     "user": "关联一个还没建过的工程",
+     "cmd": [
+      "link",
+      "新子工程"
+     ],
+     "rc": 0,
+     "has": [
+      "已创建并关联"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/新子工程"
+    ],
+    [
+     "link",
+     "新子工程"
+    ]
+   ]
+  },
+  {
+   "id": "E3",
+   "group": "E",
+   "name": "关联非法名 → rc=2",
+   "turns": [
+    {
+     "cmd": [
+      "link",
+      "../x"
+     ],
+     "rc": 2,
+     "user": "切换到「../x」工程"
+    }
+   ]
+  },
+  {
+   "id": "E4",
+   "group": "E",
+   "name": "link 后 which 生效",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/工程二"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "link",
+      "工程二"
+     ],
+     "rc": 0,
+     "user": "切换到「工程二」工程"
+    },
+    {
+     "cmd": [
+      "which"
+     ],
+     "rc": 0,
+     "has": [
+      "工程二"
+     ],
+     "user": "然后呢？"
+    }
+   ]
+  },
+  {
+   "id": "E5",
+   "group": "E",
+   "name": "link 无参数 → rc=2",
+   "turns": [
+    {
+     "cmd": [
+      "link"
+     ],
+     "rc": 2,
+     "user": "切换到「」工程"
+    }
+   ]
+  },
+  {
+   "id": "F1",
+   "group": "F",
+   "name": "list 列出全部并标当前",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/甲"
+    },
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/乙"
+    },
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/丙"
+    }
+   ],
+   "link": "乙",
+   "turns": [
+    {
+     "cmd": [
+      "list"
+     ],
+     "rc": 0,
+     "has": [
+      "甲",
+      "乙",
+      "丙",
+      "已关联"
+     ],
+     "user": "我有哪些项目？"
+    }
+   ]
+  },
+  {
+   "id": "F2",
+   "group": "F",
+   "name": "无工程 → 空态提示",
+   "turns": [
+    {
+     "cmd": [
+      "list"
+     ],
+     "rc": 0,
+     "has": [
+      "还没有工程"
+     ],
+     "user": "我有哪些项目？"
+    }
+   ]
+  },
+  {
+   "id": "F3",
+   "group": "F",
+   "name": "skills 目录不算工程",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/甲"
+    },
+    {
+     "type": "dir",
+     "path": "mounts/Minis/skills/某技能"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "list"
+     ],
+     "rc": 0,
+     "hasnt": [
+      "某技能"
+     ],
+     "user": "我有哪些项目？"
+    }
+   ]
+  },
+  {
+   "id": "F4",
+   "group": "F",
+   "name": "which 输出绑定路径",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/工A"
+    }
+   ],
+   "link": "工A",
+   "turns": [
+    {
+     "cmd": [
+      "which"
+     ],
+     "rc": 0,
+     "has": [
+      "projects/工A"
+     ],
+     "user": "我现在在哪个项目里？"
+    }
+   ]
+  },
+  {
+   "id": "F5",
+   "group": "F",
+   "name": "未绑定 which → rc=4",
+   "turns": [
+    {
+     "cmd": [
+      "which"
+     ],
+     "rc": 4,
+     "user": "我现在在哪个项目里？"
+    }
+   ]
+  },
+  {
+   "id": "F6",
+   "group": "F",
+   "name": "绑定目录消失仍有警告",
+   "link": "已删工程",
+   "turns": [
+    {
+     "cmd": [
+      "which"
+     ],
+     "rc": 0,
+     "has": [
+      "不存在"
+     ],
+     "user": "我现在在哪个项目里？"
+    }
+   ]
+  },
+  {
+   "id": "F7",
+   "group": "F",
+   "name": "list 未绑定时不误标",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/甲"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "list"
+     ],
+     "rc": 0,
+     "hasnt": [
+      "已关联"
+     ],
+     "user": "我有哪些项目？"
+    }
+   ]
+  },
+  {
+   "id": "G1",
+   "group": "G",
+   "name": "技能双向补缺",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/skills/only_ext/SKILL.md",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "app_skills/only_app/SKILL.md",
+     "content": "y"
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "app_skills/only_ext"
+    ],
+    [
+     "dir",
+     "mounts/Minis/skills/only_app"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync"
+     ],
+     "rc": 0,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "G2",
+   "group": "G",
+   "name": "sync 幂等",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/skills/a/SKILL.md",
+     "content": "a"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync"
+     ],
+     "rc": 0,
+     "user": "同步一下技能和记忆"
+    },
+    {
+     "cmd": [
+      "sync"
+     ],
+     "rc": 0,
+     "user": "然后呢？"
+    }
+   ]
+  },
+  {
+   "id": "G3",
+   "group": "G",
+   "name": "记忆取较新一份",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/memory/GLOBAL.md",
+     "content": "old"
+    },
+    {
+     "type": "file",
+     "path": "app_memory/GLOBAL.md",
+     "content": "new"
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "app_memory/GLOBAL.md",
+     "new"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync"
+     ],
+     "rc": 0,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "G4",
+   "group": "G",
+   "name": "--dry 不写盘",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/skills/newone/SKILL.md",
+     "content": "n"
+    }
+   ],
+   "assert": [
+    [
+     "absent",
+     "app_skills/newone"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync",
+      "--dry"
+     ],
+     "rc": 0,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "G5",
+   "group": "G",
+   "name": "--push 以 app 为准",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/memory/GLOBAL.md",
+     "content": "ext"
+    },
+    {
+     "type": "file",
+     "path": "app_memory/GLOBAL.md",
+     "content": "app"
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/memory/GLOBAL.md",
+     "app"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync",
+      "--push"
+     ],
+     "rc": 0,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "G6",
+   "group": "G",
+   "name": "--pull 以外部为准",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/memory/GLOBAL.md",
+     "content": "ext"
+    },
+    {
+     "type": "file",
+     "path": "app_memory/GLOBAL.md",
+     "content": "app"
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "app_memory/GLOBAL.md",
+     "ext"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync",
+      "--pull"
+     ],
+     "rc": 0,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "H1",
+   "group": "H",
+   "name": "new 路径穿越被拒",
+   "assert": [
+    [
+     "absent",
+     "mounts/escape1"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      "../escape1"
+     ],
+     "rc": 2,
+     "user": "新建一个项目，叫「../escape1」"
+    }
+   ]
+  },
+  {
+   "id": "H2",
+   "group": "H",
+   "name": "migrate 路径穿越被拒",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/旧"
+    }
+   ],
+   "assert": [
+    [
+     "absent",
+     "mounts/escape2"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "旧",
+      "../escape2"
+     ],
+     "rc": 2,
+     "user": "把「旧」并到「../escape2」"
+    }
+   ]
+  },
+  {
+   "id": "H3",
+   "group": "H",
+   "name": "未知子命令 → rc=2",
+   "turns": [
+    {
+     "cmd": [
+      "nope"
+     ],
+     "rc": 2,
+     "user": "试试看"
+    }
+   ]
+  },
+  {
+   "id": "H4",
+   "group": "H",
+   "name": "无参数 → 用法 rc=2",
+   "turns": [
+    {
+     "cmd": [],
+     "rc": 2,
+     "has": [
+      "子命令"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "H5",
+   "group": "H",
+   "name": "--help 含全部 8 个子命令",
+   "turns": [
+    {
+     "cmd": [
+      "--help"
+     ],
+     "rc": 0,
+     "has": [
+      "auto",
+      "bootstrap",
+      "sync",
+      "list",
+      "new",
+      "link",
+      "which",
+      "migrate"
+     ],
+     "user": "试试看"
+    }
+   ]
+  },
+  {
+   "id": "H6",
+   "group": "H",
+   "name": "非法分组名不建目录",
+   "assert": [
+    [
+     "absent",
+     "mounts/Minis/projects/x"
+    ]
+   ],
+   "session_group": "x/y",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 2,
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "H7",
+   "group": "H",
+   "name": "projects 被文件占据 bootstrap rc=1",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects",
+     "content": "x"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap"
+     ],
+     "rc": 1,
+     "user": "初始化一下工作区"
+    }
+   ]
+  },
+  {
+   "id": "H8",
+   "group": "H",
+   "name": "空工程提示直接写入",
+   "session_group": "空工程",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "工程是空的"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "A14",
+   "group": "A",
+   "name": "无挂载 bootstrap --json 仍是 JSON",
+   "mount": "none",
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap",
+      "--json"
+     ],
+     "rc": 3,
+     "has": [
+      "no-mount"
+     ],
+     "user": "初始化一下工作区"
+    }
+   ]
+  },
+  {
+   "id": "B13",
+   "group": "B",
+   "name": "超 60 项列出截断提示",
+   "session_group": "大工程",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f00.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f01.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f02.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f03.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f04.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f05.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f06.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f07.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f08.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f09.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f10.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f11.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f12.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f13.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f14.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f15.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f16.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f17.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f18.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f19.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f20.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f21.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f22.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f23.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f24.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f25.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f26.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f27.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f28.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f29.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f30.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f31.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f32.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f33.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f34.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f35.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f36.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f37.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f38.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f39.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f40.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f41.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f42.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f43.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f44.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f45.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f46.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f47.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f48.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f49.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f50.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f51.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f52.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f53.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f54.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f55.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f56.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f57.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f58.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f59.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f60.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f61.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f62.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f63.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f64.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f65.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f66.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f67.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f68.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大工程/f69.txt",
+     "content": "x"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "仅显示前 60 项"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "C25",
+   "group": "C",
+   "name": "prev 指向不存在目录 → 不误用",
+   "session_group": "新名",
+   "link": "新名",
+   "prev": "早就没了",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/新名"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "无需迁移"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "D7",
+   "group": "D",
+   "name": "空工程名 → rc=2",
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      ""
+     ],
+     "rc": 2,
+     "user": "新建一个项目，叫「」"
+    }
+   ]
+  },
+  {
+   "id": "G7",
+   "group": "G",
+   "name": "sync 只同步指定技能",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/skills/onlyA/SKILL.md",
+     "content": "a"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/skills/onlyB/SKILL.md",
+     "content": "b"
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "app_skills/onlyA"
+    ],
+    [
+     "absent",
+     "app_skills/onlyB"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync",
+      "onlyA"
+     ],
+     "rc": 0,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "R1-1",
+   "group": "R1",
+   "name": "旧目录只含空子目录 → 无空壳残留",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/旧名/empty1/empty2"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/a.txt",
+     "a"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R1-2",
+   "group": "R1",
+   "name": "文件名含空格与中文 → 数量与内容一致",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/带 空格 的文件.txt",
+     "content": "1"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/中文名.md",
+     "content": "2"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/带 空格 的文件.txt",
+     "1"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/中文名.md",
+     "2"
+    ],
+    [
+     "count",
+     "mounts/Minis/projects/新名",
+     "2"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R1-3",
+   "group": "R1",
+   "name": "连续两次 auto 幂等",
+   "session_group": "幂等工程",
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/幂等工程"
+    ],
+    [
+     "count",
+     "mounts/Minis/projects/幂等工程",
+     "0"
+    ],
+    [
+     "link",
+     "幂等工程"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "user": "你好"
+    },
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "user": "然后呢？"
+    }
+   ]
+  },
+  {
+   "id": "R1-4",
+   "group": "R1",
+   "name": "工程内符号链接文件不丢失",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/real.txt",
+     "content": "r"
+    },
+    {
+     "type": "symlink",
+     "path": "mounts/Minis/projects/旧名/link.txt",
+     "target": "real.txt"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "exists",
+     "mounts/Minis/projects/新名/link.txt"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/real.txt",
+     "r"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R2-1",
+   "group": "R2",
+   "name": "目标侧同名断链 symlink → 视为冲突",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/x.txt",
+     "content": "a"
+    },
+    {
+     "type": "symlink",
+     "path": "mounts/Minis/projects/新名/x.txt",
+     "target": "nowhere"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/旧名/x.txt",
+     "a"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "has": [
+      "冲突"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R2-2",
+   "group": "R2",
+   "name": "5MB 文件迁移后字节一致",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "bytes",
+     "path": "mounts/Minis/projects/旧名/big.bin",
+     "size": 5242880
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "exists",
+     "mounts/Minis/projects/新名/big.bin"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R2-3",
+   "group": "R2",
+   "name": "目标父级是文件（目录占位） → 冲突不写坏",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a/b.txt",
+     "content": "b"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/a",
+     "content": "i am file"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/a",
+     "i am file"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/旧名/a/b.txt",
+     "b"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "has": [
+      "冲突"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R2-4",
+   "group": "R2",
+   "name": "旧目录内只读文件仍可迁移",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/ro.txt",
+     "content": "ro"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/ro.txt",
+     "ro"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "已复制"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R3-1",
+   "group": "R3",
+   "name": ".project 含空白/换行 → 正确解析",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/工A"
+    },
+    {
+     "type": "file",
+     "path": "chat/.project",
+     "content": "  工A  \n\n"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "which"
+     ],
+     "rc": 0,
+     "has": [
+      "projects/工A"
+     ],
+     "user": "我现在在哪个项目里？"
+    }
+   ]
+  },
+  {
+   "id": "R3-2",
+   "group": "R3",
+   "name": ".project 指向不存在工程 → which 警告",
+   "setup": [
+    {
+     "type": "file",
+     "path": "chat/.project",
+     "content": "已删工程\n"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "which"
+     ],
+     "rc": 0,
+     "has": [
+      "不存在"
+     ],
+     "user": "我现在在哪个项目里？"
+    }
+   ]
+  },
+  {
+   "id": "R3-3",
+   "group": "R3",
+   "name": "分组名 300 字符 → 优雅失败不崩",
+   "session_group": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   "assert": [
+    [
+     "absent",
+     "mounts/Minis/projects/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 1,
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R3-4",
+   "group": "R3",
+   "name": "projects 是符号链接 → bootstrap 不破坏",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "elsewhere"
+    },
+    {
+     "type": "symlink",
+     "path": "mounts/Minis/projects",
+     "target": "../../elsewhere"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "bootstrap"
+     ],
+     "rc": 0,
+     "user": "初始化一下工作区"
+    }
+   ]
+  },
+  {
+   "id": "R4-1",
+   "group": "R4",
+   "name": "外部 skills 是文件 → 不崩",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/skills",
+     "content": "x"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync"
+     ],
+     "rc": 1,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "R4-2",
+   "group": "R4",
+   "name": "同名技能内容不同 → 保留 app 版",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/skills/s1/SKILL.md",
+     "content": "ext"
+    },
+    {
+     "type": "file",
+     "path": "app_skills/s1/SKILL.md",
+     "content": "app"
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "app_skills/s1/SKILL.md",
+     "app"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync"
+     ],
+     "rc": 0,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "R4-3",
+   "group": "R4",
+   "name": "记忆只有外部有 → 补到 app",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/memory/2026-11-16.md",
+     "content": "m"
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "app_memory/2026-11-16.md",
+     "m"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync"
+     ],
+     "rc": 0,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "R4-4",
+   "group": "R4",
+   "name": "--push 不删外部多出的技能",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/skills/extra/SKILL.md",
+     "content": "e"
+    },
+    {
+     "type": "file",
+     "path": "app_skills/mine/SKILL.md",
+     "content": "m"
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/skills/extra"
+    ],
+    [
+     "dir",
+     "mounts/Minis/skills/mine"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "sync",
+      "--push"
+     ],
+     "rc": 0,
+     "user": "同步一下技能和记忆"
+    }
+   ]
+  },
+  {
+   "id": "R5-1",
+   "group": "R5",
+   "name": "空旧目录迁移 → 成功且旧工程保留",
+   "session_group": "空新",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/空旧"
+    }
+   ],
+   "link": "空旧",
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/空新"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/空旧"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "复制 0 个文件"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R5-2",
+   "group": "R5",
+   "name": "8 层深路径迁移完整",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/d0/d1/d2/d3/d4/d5/d6/d7/deep.txt",
+     "content": "deep"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/d0/d1/d2/d3/d4/d5/d6/d7/deep.txt",
+     "deep"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R5-3",
+   "group": "R5",
+   "name": "大小写不同的工程名互不干扰",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/Proj"
+    },
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/proj"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "list"
+     ],
+     "rc": 0,
+     "has": [
+      "Proj",
+      "proj"
+     ],
+     "user": "我有哪些项目？"
+    }
+   ]
+  },
+  {
+   "id": "R5-4",
+   "group": "R5",
+   "name": "迁移到已存在空目录（0 文件）",
+   "session_group": "空目标",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    },
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/空目标"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/空目标/a.txt",
+     "a"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "合并"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R6-1",
+   "group": "R6",
+   "name": "隐藏文件与 emoji 正常显示",
+   "session_group": "展示",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/展示/.env",
+     "content": "k=v"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/展示/🎮.txt",
+     "content": "e"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      ".env",
+      "🎮.txt"
+     ],
+     "user": "你好",
+     "reply_has": [
+      ".env",
+      "🎮.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R6-2",
+   "group": "R6",
+   "name": "100 个子项 → 截断提示不崩",
+   "session_group": "大量",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f000.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f001.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f002.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f003.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f004.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f005.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f006.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f007.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f008.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f009.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f010.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f011.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f012.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f013.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f014.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f015.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f016.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f017.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f018.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f019.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f020.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f021.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f022.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f023.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f024.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f025.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f026.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f027.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f028.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f029.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f030.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f031.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f032.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f033.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f034.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f035.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f036.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f037.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f038.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f039.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f040.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f041.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f042.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f043.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f044.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f045.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f046.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f047.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f048.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f049.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f050.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f051.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f052.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f053.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f054.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f055.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f056.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f057.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f058.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f059.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f060.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f061.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f062.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f063.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f064.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f065.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f066.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f067.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f068.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f069.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f070.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f071.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f072.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f073.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f074.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f075.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f076.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f077.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f078.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f079.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f080.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f081.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f082.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f083.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f084.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f085.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f086.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f087.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f088.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f089.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f090.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f091.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f092.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f093.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f094.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f095.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f096.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f097.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f098.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/大量/f099.txt",
+     "content": "x"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "仅显示前 60 项"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R6-3",
+   "group": "R6",
+   "name": "特殊字符文件名显示与迁移",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a&b $(x).txt",
+     "content": "sp"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/a&b $(x).txt",
+     "sp"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "已复制"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R6-4",
+   "group": "R6",
+   "name": "空工程提示语准确",
+   "session_group": "空工程6",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "工程是空的"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R7-1",
+   "group": "R7",
+   "name": "迁移后分组改回旧名 → 旧名重建为空、数据留新名",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/a.txt",
+     "a"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    },
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "user": "然后呢？"
+    }
+   ]
+  },
+  {
+   "id": "R7-2",
+   "group": "R7",
+   "name": "A→B→C 连续两次迁移",
+   "session_group": "",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/A/x.txt",
+     "content": "x"
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/C/x.txt",
+     "x"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/A"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/B"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "A",
+      "B"
+     ],
+     "rc": 0,
+     "user": "把「A」并到「B」"
+    },
+    {
+     "cmd": [
+      "migrate",
+      "B",
+      "C"
+     ],
+     "rc": 0,
+     "user": "然后呢？"
+    }
+   ]
+  },
+  {
+   "id": "R7-3",
+   "group": "R7",
+   "name": "迁移后再跑 migrate → 无需迁移",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "旧名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    },
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "无需迁移"
+     ],
+     "user": "然后呢？"
+    }
+   ]
+  },
+  {
+   "id": "R7-4",
+   "group": "R7",
+   "name": "旧工程为空 → 切工程不误报改名",
+   "session_group": "分组工程",
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/分组工程"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/手工工程"
+    ],
+    [
+     "link",
+     "分组工程"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      "手工工程"
+     ],
+     "rc": 0,
+     "user": "新建一个项目，叫「手工工程」"
+    },
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "user": "然后呢？"
+    }
+   ]
+  },
+  {
+   "id": "R7-5",
+   "group": "R7",
+   "name": "旧工程有文件 + 新工程空 → 提示迁移",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "text",
+     "chat/.project-prev",
+     "旧名"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "migrate"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R7-6",
+   "group": "R7",
+   "name": "新旧都有文件 → 提示合并而非改名",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/b.txt",
+     "content": "b"
+    }
+   ],
+   "link": "旧名",
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "合并"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R8-1",
+   "group": "R8",
+   "name": "旧侧是目录、目标侧是文件 → 冲突",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/d/f.txt",
+     "content": "f"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/d",
+     "content": "file"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "file",
+     "mounts/Minis/projects/新名/d"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/旧名/d/f.txt",
+     "f"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "has": [
+      "冲突"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R8-2",
+   "group": "R8",
+   "name": "50 个文件全量搬迁一致",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f00.txt",
+     "content": "v0"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f01.txt",
+     "content": "v1"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f02.txt",
+     "content": "v2"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f03.txt",
+     "content": "v3"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f04.txt",
+     "content": "v4"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f05.txt",
+     "content": "v5"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f06.txt",
+     "content": "v6"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f07.txt",
+     "content": "v7"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f08.txt",
+     "content": "v8"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f09.txt",
+     "content": "v9"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f10.txt",
+     "content": "v10"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f11.txt",
+     "content": "v11"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f12.txt",
+     "content": "v12"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f13.txt",
+     "content": "v13"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f14.txt",
+     "content": "v14"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f15.txt",
+     "content": "v15"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f16.txt",
+     "content": "v16"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f17.txt",
+     "content": "v17"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f18.txt",
+     "content": "v18"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f19.txt",
+     "content": "v19"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f20.txt",
+     "content": "v20"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f21.txt",
+     "content": "v21"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f22.txt",
+     "content": "v22"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f23.txt",
+     "content": "v23"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f24.txt",
+     "content": "v24"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f25.txt",
+     "content": "v25"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f26.txt",
+     "content": "v26"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f27.txt",
+     "content": "v27"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f28.txt",
+     "content": "v28"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f29.txt",
+     "content": "v29"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f30.txt",
+     "content": "v30"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f31.txt",
+     "content": "v31"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f32.txt",
+     "content": "v32"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f33.txt",
+     "content": "v33"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f34.txt",
+     "content": "v34"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f35.txt",
+     "content": "v35"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f36.txt",
+     "content": "v36"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f37.txt",
+     "content": "v37"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f38.txt",
+     "content": "v38"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f39.txt",
+     "content": "v39"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f40.txt",
+     "content": "v40"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f41.txt",
+     "content": "v41"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f42.txt",
+     "content": "v42"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f43.txt",
+     "content": "v43"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f44.txt",
+     "content": "v44"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f45.txt",
+     "content": "v45"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f46.txt",
+     "content": "v46"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f47.txt",
+     "content": "v47"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f48.txt",
+     "content": "v48"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f49.txt",
+     "content": "v49"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "count",
+     "mounts/Minis/projects/新名",
+     "50"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/f49.txt",
+     "v49"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "复制 50 个文件"
+     ],
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R8-3",
+   "group": "R8",
+   "name": "无 link 时单参 migrate → rc=2",
+   "session_group": "新名",
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "新名"
+     ],
+     "rc": 2,
+     "user": "把「新名」改成新名字"
+    }
+   ]
+  },
+  {
+   "id": "R8-4",
+   "group": "R8",
+   "name": "工程名含空格（Project Skill）迁移正常",
+   "session_group": "Project Skill",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/测试 bbc/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "测试 bbc",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/Project Skill/a.txt",
+     "a"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/测试 bbc"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R8-5",
+   "group": "R8",
+   "name": "迁移中止不产生新目录",
+   "session_group": "不存在的目标",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/c.txt",
+     "content": "A"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/不存在的目标/c.txt",
+     "content": "B"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "count",
+     "mounts/Minis/projects/旧名",
+     "1"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R9-1",
+   "group": "R9",
+   "name": "migrate --json 不再被当工程名",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧/a.txt",
+     "content": "a"
+    }
+   ],
+   "link": "旧",
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/旧/a.txt",
+     "a"
+    ],
+    [
+     "absent",
+     "mounts/Minis/projects/--json"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate",
+      "--json"
+     ],
+     "rc": 2,
+     "has": [
+      "非法工程名"
+     ],
+     "user": "把「--json」改成新名字"
+    }
+   ]
+  },
+  {
+   "id": "R9-2",
+   "group": "R9",
+   "name": "new --force 被拒绝",
+   "assert": [
+    [
+     "absent",
+     "mounts/Minis/projects/--force"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      "--force"
+     ],
+     "rc": 2,
+     "user": "新建一个项目，叫「--force」"
+    }
+   ]
+  },
+  {
+   "id": "R9-3",
+   "group": "R9",
+   "name": "link -x 被拒绝",
+   "turns": [
+    {
+     "cmd": [
+      "link",
+      "-x"
+     ],
+     "rc": 2,
+     "user": "切换到「-x」工程"
+    }
+   ]
+  },
+  {
+   "id": "R9-4",
+   "group": "R9",
+   "name": "auto --json 未分组是合法 JSON",
+   "session_group": "",
+   "turns": [
+    {
+     "cmd": [
+      "auto",
+      "--json"
+     ],
+     "rc": 0,
+     "has": [
+      "\"ok\": true"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R9-5",
+   "group": "R9",
+   "name": "auto --json 无挂载是合法 JSON",
+   "mount": "none",
+   "turns": [
+    {
+     "cmd": [
+      "auto",
+      "--json"
+     ],
+     "rc": 3,
+     "has": [
+      "no-mount"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R9-6",
+   "group": "R9",
+   "name": "auto --json 非法分组名带 reason",
+   "session_group": "a/b",
+   "turns": [
+    {
+     "cmd": [
+      "auto",
+      "--json"
+     ],
+     "rc": 2,
+     "has": [
+      "bad-name"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R9-7",
+   "group": "R9",
+   "name": "auto 未知 flag 不影响主流程",
+   "session_group": "正常工程",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/正常工程"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto",
+      "--nope"
+     ],
+     "rc": 0,
+     "has": [
+      "已关联"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R10-1",
+   "group": "R10",
+   "name": "工程名 200 字符边界",
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "new",
+      "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
+     ],
+     "rc": 0,
+     "user": "新建一个项目，叫「nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn」"
+    }
+   ]
+  },
+  {
+   "id": "R10-2",
+   "group": "R10",
+   "name": "--help rc=0 与无参数 rc=2 区分",
+   "turns": [
+    {
+     "cmd": [
+      "--help"
+     ],
+     "rc": 0,
+     "user": "试试看"
+    },
+    {
+     "cmd": [],
+     "rc": 2,
+     "user": "然后呢？"
+    }
+   ]
+  },
+  {
+   "id": "R10-3",
+   "group": "R10",
+   "name": "混合树（30 文件 + 5 目录）全量一致",
+   "session_group": "新名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f00.txt",
+     "content": "0"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f01.txt",
+     "content": "1"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f02.txt",
+     "content": "2"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f03.txt",
+     "content": "3"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f04.txt",
+     "content": "4"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f05.txt",
+     "content": "5"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f06.txt",
+     "content": "6"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f07.txt",
+     "content": "7"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f08.txt",
+     "content": "8"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f09.txt",
+     "content": "9"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f10.txt",
+     "content": "10"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f11.txt",
+     "content": "11"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f12.txt",
+     "content": "12"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f13.txt",
+     "content": "13"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f14.txt",
+     "content": "14"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f15.txt",
+     "content": "15"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f16.txt",
+     "content": "16"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f17.txt",
+     "content": "17"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f18.txt",
+     "content": "18"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f19.txt",
+     "content": "19"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f20.txt",
+     "content": "20"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f21.txt",
+     "content": "21"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f22.txt",
+     "content": "22"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f23.txt",
+     "content": "23"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f24.txt",
+     "content": "24"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f25.txt",
+     "content": "25"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f26.txt",
+     "content": "26"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f27.txt",
+     "content": "27"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f28.txt",
+     "content": "28"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/f29.txt",
+     "content": "29"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/d0/x.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/d1/x.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/d2/x.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/d3/x.txt",
+     "content": "x"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/d4/x.txt",
+     "content": "x"
+    }
+   ],
+   "link": "旧名",
+   "assert": [
+    [
+     "count",
+     "mounts/Minis/projects/新名",
+     "35"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "user": "我改了项目名了"
+    }
+   ]
+  },
+  {
+   "id": "R10-4",
+   "group": "R10",
+   "name": "link 与分组同名但目录缺失 → 重建",
+   "session_group": "重建工程",
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/重建工程"
+    ],
+    [
+     "link",
+     "重建工程"
+    ]
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "已创建工程"
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R10-5",
+   "group": "R10",
+   "name": "--json 的 project 路径真实存在",
+   "session_group": "JSON工程",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/JSON工程/a.txt",
+     "content": "a"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto",
+      "--json"
+     ],
+     "rc": 0,
+     "has": [
+      "\"project\""
+     ],
+     "user": "你好"
+    }
+   ]
+  },
+  {
+   "id": "R11-1",
+   "group": "R11",
+   "name": "嵌套文件输出完整相对路径（不靠缩进）",
+   "session_group": "嵌套",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/嵌套/666/h.exe",
+     "content": "x"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "666/  ·  1 项",
+      "666/h.exe  ·  1 B"
+     ],
+     "user": "你好",
+     "reply_has": [
+      "666/  ·  1 项",
+      "666/h.exe  ·  1 B"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R11-2",
+   "group": "R11",
+   "name": "深度 2 截止：第三层文件不列，其父目录列",
+   "session_group": "三层",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/三层/a/b/c.txt",
+     "content": "c"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "a/  ·  1 项",
+      "a/b/  ·  1 项"
+     ],
+     "hasnt": [
+      "c.txt"
+     ],
+     "user": "你好",
+     "reply_has": [
+      "a/  ·  1 项",
+      "a/b/  ·  1 项"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R11-3",
+   "group": "R11",
+   "name": "空目录路径带 / 并标 空",
+   "session_group": "空目录",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/空目录/empty"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "empty/  ·  空"
+     ],
+     "user": "你好",
+     "reply_has": [
+      "empty/  ·  空"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R11-4",
+   "group": "R11",
+   "name": "顶层条目不带行首缩进",
+   "session_group": "缩进",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/缩进/top.txt",
+     "content": "t"
+    }
+   ],
+   "turns": [
+    {
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "top.txt  ·  1 B"
+     ],
+     "user": "你好",
+     "reply_has": [
+      "top.txt  ·  1 B"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R12-1",
+   "group": "R12",
+   "name": "开场问候 → 说改名（两轮）",
+   "session_group": "新名",
+   "link": "旧名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "turns": [
+    {
+     "user": "你好",
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "reply_has": [
+      "新名"
+     ]
+    },
+    {
+     "user": "我改了项目名了",
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "已复制"
+     ],
+     "reply_has": [
+      "新名"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新名/a.txt",
+     "a"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ]
+   ]
+  },
+  {
+   "id": "R12-2",
+   "group": "R12",
+   "name": "新建 → 切换 → 查询（三轮）",
+   "session_group": "甲",
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/甲"
+    }
+   ],
+   "turns": [
+    {
+     "user": "新建一个项目叫乙",
+     "cmd": [
+      "new",
+      "乙"
+     ],
+     "rc": 0,
+     "has": [
+      "已创建"
+     ]
+    },
+    {
+     "user": "切换到甲工程",
+     "cmd": [
+      "link",
+      "甲"
+     ],
+     "rc": 0,
+     "has": [
+      "已关联"
+     ]
+    },
+    {
+     "user": "我现在在哪个项目里？",
+     "cmd": [
+      "which"
+     ],
+     "rc": 0,
+     "has": [
+      "projects/甲"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/乙"
+    ],
+    [
+     "link",
+     "甲"
+    ]
+   ]
+  },
+  {
+   "id": "R12-3",
+   "group": "R12",
+   "name": "同步 → 列工程（两轮）",
+   "turns": [
+    {
+     "user": "同步一下技能和记忆",
+     "cmd": [
+      "sync"
+     ],
+     "rc": 0
+    },
+    {
+     "user": "我有哪些项目？",
+     "cmd": [
+      "list"
+     ],
+     "rc": 0,
+     "has": [
+      "工程"
+     ]
+    }
+   ],
+   "setup": [
+    {
+     "type": "dir",
+     "path": "mounts/Minis/projects/工程"
+    }
+   ]
+  },
+  {
+   "id": "R12-4",
+   "group": "R12",
+   "name": "改名遇冲突：两轮中止且如实报告",
+   "session_group": "新名",
+   "link": "旧名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/c.txt",
+     "content": "OLD"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/c.txt",
+     "content": "NEW"
+    }
+   ],
+   "turns": [
+    {
+     "user": "我改了项目名了",
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 1,
+     "has": [
+      "冲突"
+     ],
+     "reply_has": [
+      "冲突"
+     ],
+     "reply_hasnt": [
+      "已迁移"
+     ]
+    },
+    {
+     "user": "那先别动，我手动看看",
+     "no_cmd": true,
+     "rc": 0
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/旧名/c.txt",
+     "OLD"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/c.txt",
+     "NEW"
+    ]
+   ]
+  },
+  {
+   "id": "R13-1",
+   "group": "R13",
+   "name": "复制后旧工程与文件全部保留",
+   "session_group": "新名",
+   "link": "旧名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/d/b.txt",
+     "content": "b"
+    }
+   ],
+   "turns": [
+    {
+     "user": "我改了项目名了",
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "旧工程保留"
+     ],
+     "reply_has": [
+      "旧工程保留"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/旧名/a.txt",
+     "a"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/旧名/d/b.txt",
+     "b"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/a.txt",
+     "a"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/d/b.txt",
+     "b"
+    ]
+   ]
+  },
+  {
+   "id": "R13-2",
+   "group": "R13",
+   "name": "同组第二个会话：auto 直接切到新名不报改名",
+   "session_group": "新名",
+   "mount": "Minis",
+   "link": "旧名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新名/a.txt",
+     "content": "a"
+    }
+   ],
+   "turns": [
+    {
+     "user": "你好",
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "已切到同名工程"
+     ],
+     "hasnt": [
+      "如确认是改名"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "link",
+     "新名"
+    ],
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ]
+   ]
+  },
+  {
+   "id": "R13-3",
+   "group": "R13",
+   "name": "复制是拷贝不是硬链：改新文件不影响旧文件",
+   "session_group": "新名",
+   "link": "旧名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "orig"
+    }
+   ],
+   "turns": [
+    {
+     "user": "我改了项目名了",
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/旧名/a.txt",
+     "orig"
+    ]
+   ]
+  },
+  {
+   "id": "R13-4",
+   "group": "R13",
+   "name": "旧工程保留后再 migrate（已同名）→ 无需迁移",
+   "session_group": "新名",
+   "link": "旧名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/a.txt",
+     "content": "a"
+    }
+   ],
+   "turns": [
+    {
+     "user": "我改了项目名了",
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0
+    },
+    {
+     "user": "再同步一次吧",
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "无需迁移"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/旧名"
+    ]
+   ]
+  },
+  {
+   "id": "R13-5",
+   "group": "R13",
+   "name": "符号链接文件复制后仍是链接",
+   "session_group": "新名",
+   "link": "旧名",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧名/real.txt",
+     "content": "r"
+    },
+    {
+     "type": "symlink",
+     "path": "mounts/Minis/projects/旧名/link.txt",
+     "target": "real.txt"
+    }
+   ],
+   "turns": [
+    {
+     "user": "我改了项目名了",
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0
+    }
+   ],
+   "assert": [
+    [
+     "exists",
+     "mounts/Minis/projects/新名/link.txt"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新名/real.txt",
+     "r"
+    ]
+   ]
+  },
+  {
+   "id": "R14-1",
+   "group": "R14",
+   "name": "新分组开场：目录不存在就建出来",
+   "session_group": "全新分组",
+   "turns": [
+    {
+     "user": "你好",
+     "cmd": [
+      "auto"
+     ],
+     "rc": 0,
+     "has": [
+      "已创建工程并关联"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/全新分组"
+    ],
+    [
+     "link",
+     "全新分组"
+    ]
+   ]
+  },
+  {
+   "id": "R14-2",
+   "group": "R14",
+   "name": "link 已有工程不重复建",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/已有/a.txt",
+     "content": "a"
+    }
+   ],
+   "turns": [
+    {
+     "user": "切到已有工程",
+     "cmd": [
+      "link",
+      "已有"
+     ],
+     "rc": 0,
+     "has": [
+      "已关联"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/已有/a.txt",
+     "a"
+    ],
+    [
+     "link",
+     "已有"
+    ]
+   ]
+  },
+  {
+   "id": "R14-3",
+   "group": "R14",
+   "name": "旧无新无 → 建空工程并告知无内容可复制",
+   "turns": [
+    {
+     "user": "把不存在的工程迁过去",
+     "cmd": [
+      "migrate",
+      "不存在",
+      "目标"
+     ],
+     "rc": 0,
+     "has": [
+      "原工程",
+      "不存在",
+      "已创建空工程"
+     ],
+     "reply_has": [
+      "没有内容可复制"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/目标"
+    ],
+    [
+     "link",
+     "目标"
+    ]
+   ]
+  },
+  {
+   "id": "R14-4",
+   "group": "R14",
+   "name": "零参数迁移但旧目录已删 → 建空新工程",
+   "session_group": "新名",
+   "setup": [],
+   "turns": [
+    {
+     "user": "我改了项目名了",
+     "cmd": [
+      "migrate"
+     ],
+     "rc": 0,
+     "has": [
+      "已创建空工程"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/新名"
+    ],
+    [
+     "link",
+     "新名"
+    ]
+   ]
+  },
+  {
+   "id": "R14-5",
+   "group": "R14",
+   "name": "旧不存在 + --dry → 只说将创建，不落盘",
+   "turns": [
+    {
+     "user": "先看看会复制什么",
+     "cmd": [
+      "migrate",
+      "不存在",
+      "目标2",
+      "--dry"
+     ],
+     "rc": 0,
+     "has": [
+      "将创建空工程"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "absent",
+     "mounts/Minis/projects/目标2"
+    ]
+   ]
+  },
+  {
+   "id": "R15-1",
+   "group": "R15",
+   "name": "旧无新有 → 复用新工程，0 复制",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新工程/n.txt",
+     "content": "n"
+    }
+   ],
+   "turns": [
+    {
+     "user": "把旧工程并到新工程",
+     "cmd": [
+      "migrate",
+      "旧工程",
+      "新工程"
+     ],
+     "rc": 0,
+     "has": [
+      "已复用已有工程"
+     ],
+     "reply_has": [
+      "复用"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新工程/n.txt",
+     "n"
+    ],
+    [
+     "absent",
+     "mounts/Minis/projects/旧工程"
+    ],
+    [
+     "link",
+     "新工程"
+    ]
+   ]
+  },
+  {
+   "id": "R15-2",
+   "group": "R15",
+   "name": "旧无新无 → 创建空工程",
+   "turns": [
+    {
+     "user": "迁移一下",
+     "cmd": [
+      "migrate",
+      "旧工程",
+      "新工程"
+     ],
+     "rc": 0,
+     "has": [
+      "已创建空工程"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "dir",
+     "mounts/Minis/projects/新工程"
+    ],
+    [
+     "empty",
+     "mounts/Minis/projects/新工程"
+    ],
+    [
+     "link",
+     "新工程"
+    ]
+   ]
+  },
+  {
+   "id": "R15-3",
+   "group": "R15",
+   "name": "旧有新无 → 建新并复制",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧工程/a.txt",
+     "content": "a"
+    }
+   ],
+   "turns": [
+    {
+     "user": "迁移一下",
+     "cmd": [
+      "migrate",
+      "旧工程",
+      "新工程"
+     ],
+     "rc": 0,
+     "has": [
+      "已复制",
+      "旧工程保留"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新工程/a.txt",
+     "a"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/旧工程/a.txt",
+     "a"
+    ]
+   ]
+  },
+  {
+   "id": "R15-4",
+   "group": "R15",
+   "name": "旧有新有 → 复制合并，旧保留",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/旧工程/a.txt",
+     "content": "a"
+    },
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新工程/n.txt",
+     "content": "n"
+    }
+   ],
+   "turns": [
+    {
+     "user": "迁移一下",
+     "cmd": [
+      "migrate",
+      "旧工程",
+      "新工程"
+     ],
+     "rc": 0,
+     "has": [
+      "合并",
+      "已复制",
+      "旧工程保留"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新工程/a.txt",
+     "a"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/新工程/n.txt",
+     "n"
+    ],
+    [
+     "text",
+     "mounts/Minis/projects/旧工程/a.txt",
+     "a"
+    ]
+   ]
+  },
+  {
+   "id": "R15-5",
+   "group": "R15",
+   "name": "旧无新有 + --dry → 不建不改",
+   "setup": [
+    {
+     "type": "file",
+     "path": "mounts/Minis/projects/新工程/n.txt",
+     "content": "n"
+    }
+   ],
+   "turns": [
+    {
+     "user": "先预演一下",
+     "cmd": [
+      "migrate",
+      "旧工程",
+      "新工程",
+      "--dry"
+     ],
+     "rc": 0,
+     "has": [
+      "将复用"
+     ]
+    }
+   ],
+   "assert": [
+    [
+     "text",
+     "mounts/Minis/projects/新工程/n.txt",
+     "n"
+    ]
+   ]
+  }
+ ]
+}

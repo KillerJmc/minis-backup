@@ -1,0 +1,125 @@
+[
+  {
+    "name": "T1 初始化预演不写盘",
+    "kind": "init-dry",
+    "expect": [
+      "将更新 .gitignore"
+    ]
+  },
+  {
+    "name": "T2 初始化只建本地仓库，不配远程、不联网",
+    "kind": "init",
+    "expect": [
+      "本地仓库就绪"
+    ],
+    "assert_file": [
+      ".gitignore"
+    ],
+    "assert_no_remote": true
+  },
+  {
+    "name": "T3 无子命令打印帮助 rc=2",
+    "kind": "usage",
+    "args": "",
+    "expect": [
+      "usage"
+    ],
+    "rc": 2
+  },
+  {
+    "name": "T4 未知子命令不被当成位置参数 rc=2",
+    "kind": "usage",
+    "args": "bogus",
+    "expect": [
+      "invalid choice"
+    ],
+    "rc": 2
+  },
+  {
+    "name": "T5 预演列出全部仓库且不改名",
+    "kind": "backup-dry",
+    "expect": [
+      "将备份",
+      "（预演，未提交、未改名）"
+    ]
+  },
+  {
+    "name": "T6 本地提交后 .git 全部恢复、无残留、工作区干净",
+    "kind": "backup-local",
+    "expect": [
+      "已提交",
+      "已改名",
+      "已恢复"
+    ]
+  },
+  {
+    "name": "T7 子目录 .gitignore 也改名，内层嵌套仓库不被静默排除",
+    "kind": "backup-ignores",
+    "expect": [
+      "已提交"
+    ]
+  },
+  {
+    "name": "T8 第二轮备份照常工作",
+    "kind": "backup-twice",
+    "expect": [
+      "已提交"
+    ]
+  },
+  {
+    "name": "T9 推送后回验：能克隆回来完整还原",
+    "kind": "push-verify",
+    "expect": [
+      "已推送",
+      "回验通过"
+    ]
+  },
+  {
+    "name": "T10 禁网时拒绝推到 https 地址，并恢复 .git",
+    "kind": "push-nonet",
+    "expect": [
+      "拒绝推送到网络地址"
+    ],
+    "rc": 1
+  },
+  {
+    "name": "T11 空目录还原：整份铺入，不建 bak/",
+    "kind": "restore-empty",
+    "expect": [
+      "已恢复",
+      "还原完成"
+    ]
+  },
+  {
+    "name": "T12 非空且无 .git：停下并要用户决定 rc=6",
+    "kind": "restore-nonempty",
+    "expect": [
+      "先停下",
+      "请你决定下一步"
+    ],
+    "rc": 6
+  },
+  {
+    "name": "T13 有 .git 还原：旧内容进 bak/，备份铺回",
+    "kind": "restore-repo",
+    "expect": [
+      "已移入",
+      "还原完成"
+    ]
+  },
+  {
+    "name": "T14 扫描敏感信息：报告不打明文，--fix 后密码全星号",
+    "kind": "scan-dirty",
+    "expect": [
+      "处命中",
+      "已脱敏"
+    ]
+  },
+  {
+    "name": "T15 提交信息符合 Angular：chore(backup): 备份",
+    "kind": "message",
+    "expect": [
+      "备份"
+    ]
+  }
+]

@@ -1,0 +1,550 @@
+{
+ "cases": [
+  {
+   "id": "V1",
+   "group": "valid",
+   "name": "合法技能 → 无 ERROR",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 0,
+   "has": [
+    "0 个 ERROR"
+   ]
+  },
+  {
+   "id": "V2",
+   "group": "valid",
+   "name": "带 references 指向 → 无 WARN",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "references/commands.md": "x",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 0,
+   "has": [
+    "0 个 WARN"
+   ]
+  },
+  {
+   "id": "V3",
+   "group": "valid",
+   "name": "--json 输出可解析",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 0,
+   "extra": [
+    "--json"
+   ],
+   "json_ok": true,
+   "json_ok_key": "errors"
+  },
+  {
+   "id": "M1",
+   "group": "meta",
+   "name": "缺 triggers",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: a，b\nversion: 1.0.0\n---\n\na，b\n\n## 功能\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "缺少 triggers"
+   ]
+  },
+  {
+   "id": "M2",
+   "group": "meta",
+   "name": "description 超 200",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述很长的描述\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "description 过长"
+   ]
+  },
+  {
+   "id": "M3",
+   "group": "meta",
+   "name": "name 与目录名不一致",
+   "files": {
+    "SKILL.md": "---\nname: other\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "不一致"
+   ]
+  },
+  {
+   "id": "M4",
+   "group": "meta",
+   "name": "无 frontmatter",
+   "files": {
+    "SKILL.md": "# 标题\n\n正文\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "缺少 frontmatter"
+   ]
+  },
+  {
+   "id": "M5",
+   "group": "meta",
+   "name": "version 非 x.y.z → WARN",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: v1\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 0,
+   "has": [
+    "WARN"
+   ]
+  },
+  {
+   "id": "B1",
+   "group": "body",
+   "name": "首句是标题 → ERROR",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n# 标题\n\n正文\n\n## 功能\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "正文第一句是标题"
+   ]
+  },
+  {
+   "id": "B2",
+   "group": "body",
+   "name": "首句与 description 不一致",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n完全不同的一句话。\n\n## 功能\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "不一致"
+   ]
+  },
+  {
+   "id": "B3",
+   "group": "body",
+   "name": "缺功能表",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "缺少「## 功能」"
+   ]
+  },
+  {
+   "id": "B4",
+   "group": "body",
+   "name": "正文超 500 行",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n- 行0\n- 行1\n- 行2\n- 行3\n- 行4\n- 行5\n- 行6\n- 行7\n- 行8\n- 行9\n- 行10\n- 行11\n- 行12\n- 行13\n- 行14\n- 行15\n- 行16\n- 行17\n- 行18\n- 行19\n- 行20\n- 行21\n- 行22\n- 行23\n- 行24\n- 行25\n- 行26\n- 行27\n- 行28\n- 行29\n- 行30\n- 行31\n- 行32\n- 行33\n- 行34\n- 行35\n- 行36\n- 行37\n- 行38\n- 行39\n- 行40\n- 行41\n- 行42\n- 行43\n- 行44\n- 行45\n- 行46\n- 行47\n- 行48\n- 行49\n- 行50\n- 行51\n- 行52\n- 行53\n- 行54\n- 行55\n- 行56\n- 行57\n- 行58\n- 行59\n- 行60\n- 行61\n- 行62\n- 行63\n- 行64\n- 行65\n- 行66\n- 行67\n- 行68\n- 行69\n- 行70\n- 行71\n- 行72\n- 行73\n- 行74\n- 行75\n- 行76\n- 行77\n- 行78\n- 行79\n- 行80\n- 行81\n- 行82\n- 行83\n- 行84\n- 行85\n- 行86\n- 行87\n- 行88\n- 行89\n- 行90\n- 行91\n- 行92\n- 行93\n- 行94\n- 行95\n- 行96\n- 行97\n- 行98\n- 行99\n- 行100\n- 行101\n- 行102\n- 行103\n- 行104\n- 行105\n- 行106\n- 行107\n- 行108\n- 行109\n- 行110\n- 行111\n- 行112\n- 行113\n- 行114\n- 行115\n- 行116\n- 行117\n- 行118\n- 行119\n- 行120\n- 行121\n- 行122\n- 行123\n- 行124\n- 行125\n- 行126\n- 行127\n- 行128\n- 行129\n- 行130\n- 行131\n- 行132\n- 行133\n- 行134\n- 行135\n- 行136\n- 行137\n- 行138\n- 行139\n- 行140\n- 行141\n- 行142\n- 行143\n- 行144\n- 行145\n- 行146\n- 行147\n- 行148\n- 行149\n- 行150\n- 行151\n- 行152\n- 行153\n- 行154\n- 行155\n- 行156\n- 行157\n- 行158\n- 行159\n- 行160\n- 行161\n- 行162\n- 行163\n- 行164\n- 行165\n- 行166\n- 行167\n- 行168\n- 行169\n- 行170\n- 行171\n- 行172\n- 行173\n- 行174\n- 行175\n- 行176\n- 行177\n- 行178\n- 行179\n- 行180\n- 行181\n- 行182\n- 行183\n- 行184\n- 行185\n- 行186\n- 行187\n- 行188\n- 行189\n- 行190\n- 行191\n- 行192\n- 行193\n- 行194\n- 行195\n- 行196\n- 行197\n- 行198\n- 行199\n- 行200\n- 行201\n- 行202\n- 行203\n- 行204\n- 行205\n- 行206\n- 行207\n- 行208\n- 行209\n- 行210\n- 行211\n- 行212\n- 行213\n- 行214\n- 行215\n- 行216\n- 行217\n- 行218\n- 行219\n- 行220\n- 行221\n- 行222\n- 行223\n- 行224\n- 行225\n- 行226\n- 行227\n- 行228\n- 行229\n- 行230\n- 行231\n- 行232\n- 行233\n- 行234\n- 行235\n- 行236\n- 行237\n- 行238\n- 行239\n- 行240\n- 行241\n- 行242\n- 行243\n- 行244\n- 行245\n- 行246\n- 行247\n- 行248\n- 行249\n- 行250\n- 行251\n- 行252\n- 行253\n- 行254\n- 行255\n- 行256\n- 行257\n- 行258\n- 行259\n- 行260\n- 行261\n- 行262\n- 行263\n- 行264\n- 行265\n- 行266\n- 行267\n- 行268\n- 行269\n- 行270\n- 行271\n- 行272\n- 行273\n- 行274\n- 行275\n- 行276\n- 行277\n- 行278\n- 行279\n- 行280\n- 行281\n- 行282\n- 行283\n- 行284\n- 行285\n- 行286\n- 行287\n- 行288\n- 行289\n- 行290\n- 行291\n- 行292\n- 行293\n- 行294\n- 行295\n- 行296\n- 行297\n- 行298\n- 行299\n- 行300\n- 行301\n- 行302\n- 行303\n- 行304\n- 行305\n- 行306\n- 行307\n- 行308\n- 行309\n- 行310\n- 行311\n- 行312\n- 行313\n- 行314\n- 行315\n- 行316\n- 行317\n- 行318\n- 行319\n- 行320\n- 行321\n- 行322\n- 行323\n- 行324\n- 行325\n- 行326\n- 行327\n- 行328\n- 行329\n- 行330\n- 行331\n- 行332\n- 行333\n- 行334\n- 行335\n- 行336\n- 行337\n- 行338\n- 行339\n- 行340\n- 行341\n- 行342\n- 行343\n- 行344\n- 行345\n- 行346\n- 行347\n- 行348\n- 行349\n- 行350\n- 行351\n- 行352\n- 行353\n- 行354\n- 行355\n- 行356\n- 行357\n- 行358\n- 行359\n- 行360\n- 行361\n- 行362\n- 行363\n- 行364\n- 行365\n- 行366\n- 行367\n- 行368\n- 行369\n- 行370\n- 行371\n- 行372\n- 行373\n- 行374\n- 行375\n- 行376\n- 行377\n- 行378\n- 行379\n- 行380\n- 行381\n- 行382\n- 行383\n- 行384\n- 行385\n- 行386\n- 行387\n- 行388\n- 行389\n- 行390\n- 行391\n- 行392\n- 行393\n- 行394\n- 行395\n- 行396\n- 行397\n- 行398\n- 行399\n- 行400\n- 行401\n- 行402\n- 行403\n- 行404\n- 行405\n- 行406\n- 行407\n- 行408\n- 行409\n- 行410\n- 行411\n- 行412\n- 行413\n- 行414\n- 行415\n- 行416\n- 行417\n- 行418\n- 行419\n- 行420\n- 行421\n- 行422\n- 行423\n- 行424\n- 行425\n- 行426\n- 行427\n- 行428\n- 行429\n- 行430\n- 行431\n- 行432\n- 行433\n- 行434\n- 行435\n- 行436\n- 行437\n- 行438\n- 行439\n- 行440\n- 行441\n- 行442\n- 行443\n- 行444\n- 行445\n- 行446\n- 行447\n- 行448\n- 行449\n- 行450\n- 行451\n- 行452\n- 行453\n- 行454\n- 行455\n- 行456\n- 行457\n- 行458\n- 行459\n- 行460\n- 行461\n- 行462\n- 行463\n- 行464\n- 行465\n- 行466\n- 行467\n- 行468\n- 行469\n- 行470\n- 行471\n- 行472\n- 行473\n- 行474\n- 行475\n- 行476\n- 行477\n- 行478\n- 行479\n- 行480\n- 行481\n- 行482\n- 行483\n- 行484\n- 行485\n- 行486\n- 行487\n- 行488\n- 行489\n- 行490\n- 行491\n- 行492\n- 行493\n- 行494\n- 行495\n- 行496\n- 行497\n- 行498\n- 行499\n- 行500\n- 行501\n- 行502\n- 行503\n- 行504\n- 行505\n- 行506\n- 行507\n- 行508\n- 行509\n- 行510\n- 行511\n- 行512\n- 行513\n- 行514\n- 行515\n- 行516\n- 行517\n- 行518\n- 行519",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "正文过长"
+   ]
+  },
+  {
+   "id": "B5",
+   "group": "body",
+   "name": "出现 F1 编号 → WARN",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n| F1 | x |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 0,
+   "has": [
+    "编号"
+   ]
+  },
+  {
+   "id": "E1",
+   "group": "env",
+   "name": "目录不存在 → rc=2",
+   "no_dir": true,
+   "rc": 2,
+   "has": [
+    "目录不存在"
+   ]
+  },
+  {
+   "id": "E2",
+   "group": "env",
+   "name": "有 scripts 无 tests → WARN",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "scripts/x.py": "print(1)",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 0,
+   "has": [
+    "没有 tests/"
+   ]
+  },
+  {
+   "id": "E3",
+   "group": "env",
+   "name": "不在 git 仓库 → ERROR",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "不在任何 git 仓库"
+   ],
+   "no_git": true
+  },
+  {
+   "id": "P1",
+   "group": "layout",
+   "name": "工程层缺 PROGRESS.md → WARN",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "parent_files": {
+    "PROJECT.md": "x"
+   },
+   "rc": 0,
+   "has": [
+    "缺少 PROGRESS.md"
+   ]
+  },
+  {
+   "id": "P2",
+   "group": "layout",
+   "name": "技能目录里放 PROJECT.md → WARN",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "PROJECT.md": "x",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "parent_files": {
+    "PROJECT.md": "x",
+    "PROGRESS.md": "x"
+   },
+   "rc": 0,
+   "has": [
+    "不应有 PROJECT.md"
+   ]
+  },
+  {
+   "id": "P3",
+   "group": "layout",
+   "name": "独立技能（无工程层）→ 不报工程层问题",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 0,
+   "hasnt": [
+    "工程层"
+   ]
+  },
+  {
+   "id": "P4",
+   "group": "layout",
+   "name": "工程层齐全 → 无 layout WARN",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "parent_files": {
+    "PROJECT.md": "x",
+    "PROGRESS.md": "x"
+   },
+   "rc": 0,
+   "hasnt": [
+    "PROJECT.md",
+    "PROGRESS.md"
+   ]
+  },
+  {
+   "id": "P5",
+   "group": "layout",
+   "name": "docs 未在 PROJECT.md 引用 → WARN",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "parent_files": {
+    "PROJECT.md": "# demo\n",
+    "PROGRESS.md": "x",
+    "docs/mk-api.md": "x"
+   },
+   "rc": 0,
+   "has": [
+    "docs/mk-api.md 未在 PROJECT.md 里引用"
+   ]
+  },
+  {
+   "id": "P6",
+   "group": "layout",
+   "name": "docs 已引用 → 不告警",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "parent_files": {
+    "PROJECT.md": "# demo\n调研见 docs/mk-api.md\n",
+    "PROGRESS.md": "x",
+    "docs/mk-api.md": "x"
+   },
+   "rc": 0,
+   "hasnt": [
+    "未在 PROJECT.md 里引用"
+   ]
+  },
+  {
+   "id": "P7",
+   "group": "layout",
+   "name": "工程层下的工作副本有 .git → 不告警",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    ".git/HEAD": "ref: x",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "parent_files": {
+    "PROJECT.md": "x",
+    "PROGRESS.md": "x"
+   },
+   "rc": 0,
+   "hasnt": [
+    "仓库元数据"
+   ]
+  },
+  {
+   "id": "C1",
+   "group": "changelog",
+   "name": "缺 CHANGELOG.md → ERROR",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n"
+   },
+   "rc": 1,
+   "has": [
+    "缺少 CHANGELOG.md"
+   ]
+  },
+  {
+   "id": "C2",
+   "group": "changelog",
+   "name": "版本与 version 不一致 → ERROR",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "0.9.0 · 2026-11-23\n\n新增：\n\n- 旧版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "不一致"
+   ]
+  },
+  {
+   "id": "C3",
+   "group": "changelog",
+   "name": "版本一致且降序 → 无 ERROR",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n\n0.9.0 · 2026-11-01\n\n新增：\n\n- 旧版：初始能力\n"
+   },
+   "rc": 0,
+   "has": [
+    "0 个 ERROR"
+   ]
+  },
+  {
+   "id": "C4",
+   "group": "changelog",
+   "name": "版本升序 → WARN 未按降序",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "0.9.0 · 2026-11-01\n\n新增：\n\n- 旧版：初始能力\n\n1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "不一致",
+    "未按降序"
+   ]
+  },
+  {
+   "id": "C5",
+   "group": "changelog",
+   "name": "无合规版本行 → ERROR",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "# 变更记录\n\n- 首版：初始能力\n"
+   },
+   "rc": 1,
+   "has": [
+    "没有 `x.y.z · 日期` 形式的版本行"
+   ]
+  },
+  {
+   "id": "C6",
+   "group": "changelog",
+   "name": "条目缺冒号 → WARN",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n首版初始能力\n"
+   },
+   "rc": 0,
+   "has": [
+    "`- 小标题：内容` 形式的条目"
+   ]
+  },
+  {
+   "id": "N1",
+   "group": "normalize",
+   "name": "合规工程 → 无待办",
+   "dir_name": "proj",
+   "script": "normalize.py",
+   "args": [
+    "{dir}"
+   ],
+   "files": {
+    "PROJECT.md": "# demo 工程\n",
+    "PROGRESS.md": "# 进度\n",
+    ".gitignore": "__pycache__/\n*.pyc\n.DS_Store\n\n# 技能目录各自是独立 git 仓库，不纳入工程仓库\n/demo/\n",
+    "temp/.gitkeep": "",
+    "demo/SKILL.md": "---\nname: demo\nversion: 1.0.0\ndescription: 演示\ntriggers: 演示\n---\n\n演示。\n",
+    "demo/CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：演示能力\n"
+   },
+   "rc": 0,
+   "has": [
+    "结构已合规"
+   ]
+  },
+  {
+   "id": "N2",
+   "group": "normalize",
+   "name": "缺 PROJECT.md → 预演提示将新建",
+   "dir_name": "proj",
+   "script": "normalize.py",
+   "args": [
+    "{dir}"
+   ],
+   "files": {
+    "PROGRESS.md": "# 进度\n",
+    "deploy.py": "# stub\n",
+    ".gitignore": "__pycache__/\n*.pyc\n.DS_Store\n\n/*/\n!/temp/\n\ntemp/**/*.png\ntemp/**/*.jpg\ntemp/**/*.jpeg\ntemp/**/*.pdf\ntemp/**/*.zip\ntemp/**/*.mp4\ntemp/**/*.sqlite\n",
+    "temp/.gitkeep": "",
+    "demo/SKILL.md": "---\nname: demo\nversion: 1.0.0\ndescription: 演示\ntriggers: 演示\n---\n\n演示。\n",
+    "demo/CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：演示能力\n"
+   },
+   "rc": 0,
+   "has": [
+    "将新建 PROJECT.md"
+   ],
+   "absent": [
+    "PROJECT.md"
+   ]
+  },
+  {
+   "id": "N3",
+   "group": "normalize",
+   "name": "技能目录名与 name 不一致 → rc=3 停止",
+   "dir_name": "proj",
+   "script": "normalize.py",
+   "args": [
+    "{dir}"
+   ],
+   "files": {
+    "PROJECT.md": "# demo 工程\n",
+    "PROGRESS.md": "# 进度\n",
+    "deploy.py": "# stub\n",
+    ".gitignore": "__pycache__/\n*.pyc\n.DS_Store\n\n/*/\n!/temp/\n\ntemp/**/*.png\ntemp/**/*.jpg\ntemp/**/*.jpeg\ntemp/**/*.pdf\ntemp/**/*.zip\ntemp/**/*.mp4\ntemp/**/*.sqlite\n",
+    "temp/.gitkeep": "",
+    "demo/SKILL.md": "---\nname: other\nversion: 1.0.0\ndescription: 演示\ntriggers: 演示\n---\n\n演示。\n",
+    "demo/CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：演示能力\n"
+   },
+   "rc": 3,
+   "has": [
+    "技能目录名与 name 不一致",
+    "已停止"
+   ]
+  },
+  {
+   "id": "N4",
+   "group": "normalize",
+   "name": "只有 .tmp → 提示改名为 temp",
+   "dir_name": "proj",
+   "script": "normalize.py",
+   "args": [
+    "{dir}"
+   ],
+   "files": {
+    "PROJECT.md": "# demo 工程\n",
+    "PROGRESS.md": "# 进度\n",
+    "deploy.py": "# stub\n",
+    ".gitignore": "__pycache__/\n*.pyc\n.DS_Store\n\n/*/\n!/temp/\n\ntemp/**/*.png\ntemp/**/*.jpg\ntemp/**/*.jpeg\ntemp/**/*.pdf\ntemp/**/*.zip\ntemp/**/*.mp4\ntemp/**/*.sqlite\n",
+    "demo/SKILL.md": "---\nname: demo\nversion: 1.0.0\ndescription: 演示\ntriggers: 演示\n---\n\n演示。\n",
+    "demo/CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：演示能力\n",
+    ".tmp/.gitkeep": ""
+   },
+   "rc": 0,
+   "has": [
+    "改名为 temp"
+   ]
+  },
+  {
+   "id": "N5",
+   "group": "normalize",
+   "name": "--apply 会真的建文件",
+   "dir_name": "proj",
+   "script": "normalize.py",
+   "args": [
+    "--apply",
+    "{dir}"
+   ],
+   "files": {
+    "PROGRESS.md": "# 进度\n",
+    "deploy.py": "# stub\n",
+    ".gitignore": "__pycache__/\n*.pyc\n.DS_Store\n\n/*/\n!/temp/\n\ntemp/**/*.png\ntemp/**/*.jpg\ntemp/**/*.jpeg\ntemp/**/*.pdf\ntemp/**/*.zip\ntemp/**/*.mp4\ntemp/**/*.sqlite\n",
+    "temp/.gitkeep": "",
+    "demo/SKILL.md": "---\nname: demo\nversion: 1.0.0\ndescription: 演示\ntriggers: 演示\n---\n\n演示。\n",
+    "demo/CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：演示能力\n"
+   },
+   "rc": 0,
+   "has": [
+    "开始执行"
+   ],
+   "exists": [
+    "PROJECT.md",
+    "temp/.gitkeep"
+   ]
+  },
+  {
+   "id": "P8",
+   "group": "layout",
+   "name": "技能目录里放 WORKFLOW.md → WARN",
+   "files": {
+    "SKILL.md": "---\nname: demo\ndescription: 项目绑定，项目迁移，项目查询，资源同步\nversion: 1.0.0\ntriggers: 工程,项目,改名\n---\n\n项目绑定，项目迁移，项目查询，资源同步。\n\n## 功能\n\n| 功能 | 触发关键字 | 作用 |\n|---|---|---|\n| 项目绑定 | 切到 X | 绑定目录 |\n\n正文细节见 references/commands.md。\n",
+    "CHANGELOG.md": "1.0.0 · 2026-11-23\n\n新增：\n\n- 首版：初始能力\n",
+    "WORKFLOW.md": "# 流程\n"
+   },
+   "parent_files": {
+    "PROJECT.md": "# p\n",
+    "PROGRESS.md": "# g\n"
+   },
+   "rc": 0,
+   "has": [
+    "技能目录里不应有 WORKFLOW.md"
+   ]
+  }
+ ]
+}

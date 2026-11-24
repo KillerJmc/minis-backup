@@ -1,0 +1,16 @@
+0000000000000000000000000000000000000000 10b2070bd307fbfe718c9281d61456e6558287dd Minis Agent <agent@local> 1794820242 +0800	commit (initial): chore: 导入 project-workspace v6.4.0 作为受版本管理的工作副本
+10b2070bd307fbfe718c9281d61456e6558287dd 874cbe94775ad1c10e4062d288d8cf15696fc0d9 Minis Agent <agent@local> 1794820444 +0800	commit: docs: 增加 WORKFLOW 规范与 deploy 上线脚本，SKILL 指向新流程
+874cbe94775ad1c10e4062d288d8cf15696fc0d9 63ed75d33fe982b7e331b2a1cb4216721974a088 Minis Agent <agent@local> 1794820853 +0800	commit: docs(project): 记录 git 工作流引入
+63ed75d33fe982b7e331b2a1cb4216721974a088 872b6ac5f0ef0245b9883a54de3ee7ba23dddd16 Minis Agent <agent@local> 1794825137 +0800	commit: chore: skill 拆出独立仓库，本仓库只管工程文档与脚本
+872b6ac5f0ef0245b9883a54de3ee7ba23dddd16 0e346f4ea76113dca5f8d9a5092338fcbb0bcdad Minis Agent <agent@local> 1794825407 +0800	commit: docs(workflow): 改为双仓库规范
+0e346f4ea76113dca5f8d9a5092338fcbb0bcdad 738045da118f63720978f382fd92e5850d5a8904 Minis Agent <agent@local> 1794825694 +0800	commit: fix(deploy): 排除 .git，避免把仓库元数据部署到 skills
+738045da118f63720978f382fd92e5850d5a8904 6b9be69eb554dd3db396b2e8e2f15930b3291e2a Minis Agent <agent@local> 1794834375 +0800	commit: chore: 纳入 skill-generator 工作副本，deploy 支持多技能
+6b9be69eb554dd3db396b2e8e2f15930b3291e2a d8dfbd4c969e4001dc17cfd418141418b2e93a5c Minis Agent <agent@local> 1795439588 +0800	commit: docs(progress): 补 PROGRESS.md
+d8dfbd4c969e4001dc17cfd418141418b2e93a5c e4bd4ceb463a3a1cc74eae8792c39b6cad691fd1 Minis Agent <agent@local> 1795440499 +0800	commit: docs(progress): skill-generator v1.2.0 记录
+e4bd4ceb463a3a1cc74eae8792c39b6cad691fd1 17b8eef2b12aa86f3ecc19443c2b4718d22d7386 Minis Agent <agent@local> 1795456438 +0800	commit: docs(progress): 记录 project-workspace v1.4.1 上线
+17b8eef2b12aa86f3ecc19443c2b4718d22d7386 5867929b29ff953828a12b995b83f50bcc346186 Minis Agent <agent@local> 1795497883 +0800	commit: chore: 去除自建 WORKFLOW.md 与 deploy.py，改由 skill-generator 统一提供
+5867929b29ff953828a12b995b83f50bcc346186 a2acdd42fb173d89f11d63b616581fbb76e1ed46 Minis Agent <agent@local> 1795498687 +0800	commit: chore(gitignore): 按 skill-generator 规范补标准忽略规则
+a2acdd42fb173d89f11d63b616581fbb76e1ed46 eafa6678135749e414ad10cd072e9168fb0137c4 Minis Agent <agent@local> 1795500899 +0800	commit: docs(progress): 记录 project-workspace v1.5.0 上线
+eafa6678135749e414ad10cd072e9168fb0137c4 45a01ba27c5fcb33611a2790eedc98f362780c80 Minis Agent <agent@local> 1795502535 +0800	commit: fix(gitignore): 只排除技能目录，其余一律入库
+45a01ba27c5fcb33611a2790eedc98f362780c80 1049e50a20f3fd36aede9f337fb0a5b102da920c Minis Agent <agent@local> 1795513955 +0800	commit: docs(progress): 记录 project-workspace v1.5.1 上线
+1049e50a20f3fd36aede9f337fb0a5b102da920c f56500a43a4ba1e250d96f4f396bcd390a946b35 Minis Agent <agent@local> 1795514062 +0800	commit: docs(progress): 划掉失效待办，更正生成器版本

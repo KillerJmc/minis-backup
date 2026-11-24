@@ -1,0 +1,114 @@
+{
+  "_comment": "对话级用例：user 是用户原话，argv 是实际命令（相对 python3 scripts/route.py），断言看 rc 与输出。network=true 的用例默认跳过，加 --live 才跑。",
+  "cases": [
+    {
+      "id": "list-basic",
+      "user": "有哪些平台 / 支持哪些供应商",
+      "argv": ["list"],
+      "expect_rc": 0,
+      "stdout_has": ["支持 3 个平台", "麦块云", "魔搭", "七牛", "当前会话"],
+      "network": false
+    },
+    {
+      "id": "list-json",
+      "user": "把支持平台列表给我 JSON",
+      "argv": ["list", "--json"],
+      "expect_rc": 0,
+      "stdout_has": ["\"platforms\"", "\"is_current\"", "\"implemented\"", "\"configured\""],
+      "network": false
+    },
+    {
+      "id": "list-json-idempotent",
+      "user": "再列一次（结果应完全一致）",
+      "argv": ["list", "--json"],
+      "expect_rc": 0,
+      "idempotent": true,
+      "network": false
+    },
+    {
+      "id": "default-subcommand",
+      "user": "查额度（不带子命令）",
+      "argv": ["--json", "--provider", "minekuai"],
+      "env": {"MK_CONFIG": "/tmp/qs-missing-config.json"},
+      "expect_rc": 4,
+      "stdout_has": ["\"mode\": \"quota\"", "\"platform\": \"minekuai\""],
+      "network": false
+    },
+    {
+      "id": "provider-alias-cn",
+      "user": "用中文别名指定平台",
+      "argv": ["quota", "--provider", "麦块", "--json"],
+      "env": {"MK_CONFIG": "/tmp/qs-missing-config.json"},
+      "expect_rc": 4,
+      "stdout_has": ["\"platform\": \"minekuai\""],
+      "network": false
+    },
+    {
+      "id": "provider-alias-en",
+      "user": "用英文别名指定平台",
+      "argv": ["quota", "--provider", "ms", "--json"],
+      "env": {"MSC_CONFIG": "/tmp/qs-missing-config.json"},
+      "expect_rc": 4,
+      "stdout_has": ["\"platform\": \"modelscope\""],
+      "network": false
+    },
+    {
+      "id": "missing-config",
+      "user": "登录态没配好时会怎样",
+      "argv": ["quota", "--provider", "minekuai"],
+      "env": {"MK_CONFIG": "/tmp/qs-missing-config.json"},
+      "expect_rc": 4,
+      "stderr_has": ["缺少配置文件", "缺少配置"],
+      "network": false
+    },
+    {
+      "id": "unknown-subcommand",
+      "user": "乱敲子命令",
+      "argv": ["foo"],
+      "expect_rc": 2,
+      "stderr_has": ["未知子命令", "用法"],
+      "network": false
+    },
+    {
+      "id": "unknown-flag",
+      "user": "给了不存在的参数",
+      "argv": ["list", "--bogus"],
+      "expect_rc": 2,
+      "stderr_has": ["unrecognized arguments"],
+      "network": false
+    },
+    {
+      "id": "unknown-provider",
+      "user": "指定一个不存在的平台",
+      "argv": ["quota", "--provider", "不存在的平台"],
+      "expect_rc": 1,
+      "stderr_has": ["未知平台", "可用"],
+      "network": false
+    },
+    {
+      "id": "provider-all-mutually-exclusive",
+      "user": "同时给 --provider 和 --all",
+      "argv": ["quota", "--provider", "mk", "--all"],
+      "expect_rc": 2,
+      "stderr_has": ["not allowed with"],
+      "network": false
+    },
+    {
+      "id": "live-quota",
+      "user": "查我现在的额度",
+      "argv": ["quota", "--json"],
+      "expect_rc": 0,
+      "stdout_has": ["\"checked_at\"", "\"tokens\"", "\"usage\""],
+      "network": true
+    },
+    {
+      "id": "live-quota-format",
+      "user": "查额度，看人读的展示格式",
+      "argv": ["quota"],
+      "expect_rc": 0,
+      "stdout_has": ["💰 付费额度", "🎁 免费额度", "💳 账户",
+                     "已用", "剩余", "总量", "今日消耗", "近 3 天消耗", "签到："],
+      "network": true
+    }
+  ]
+}
