@@ -1,7 +1,7 @@
 ---
 name: minis-git-backup
 description: 备份初始化，远程配置，备份提交，隐私检查，备份下载
-version: 2.0.1
+version: 2.1.0
 triggers: 初始化备份,配置远程,提交备份,检查隐私,下载备份
 ---
 
@@ -19,7 +19,9 @@ triggers: 初始化备份,配置远程,提交备份,检查隐私,下载备份
 
 包名、参数、退出码、已知限制见 [`references/commands.md`](references/commands.md)。
 
-**备份的是什么**：`/var/minis/mounts/Minis/` 整个目录，除 `bak/` 与可重建缓存之外**全部逐文件入库**。
+**备份的是什么**：`/var/minis/mounts/Minis/` 整个目录，除 `bak/`、可重建缓存与**隐私记忆**之外**全部逐文件入库**。
+
+**隐私记忆不上传**：`memory/` 下的日期文件（`YYYY-MM-DD.md`）记录的是每天的工作细节，含隐私，**不备份、不上传**。`GLOBAL.md`、`SOUL.md` 这类配置照常备份。过滤由 `.gitignore` 规则与回验基准共同保证，不靠人工记得删。
 
 **怎么处理 `.git`**：git 拒绝跟踪任何 `.git` 路径（`git add -f x/.git/y` 会报 `is in submodule`）。所以备份时把**所有** `.git`（任意层级、含嵌套）临时改名成 `.git-backup`，git 就能当普通文件跟踪；提交推送后立刻改回原名。
 
@@ -31,7 +33,7 @@ triggers: 初始化备份,配置远程,提交备份,检查隐私,下载备份
 - 子仓库的 objects 按对象去重，改一个文件只增该文件大小的对象，不会整包重来
 - 还原后子仓库可直接 `git log`、`git commit`、`git push`
 
-`.gitignore` 由脚本生成，只排除 `bak/` 与缓存。
+`.gitignore` 由脚本生成，只排除 `bak/`、缓存与 `memory/` 下的日期记忆。
 
 ## 备份初始化
 
@@ -80,7 +82,7 @@ python3 /var/minis/skills/minis-git-backup/scripts/backup.py backup
 
 做的事：
 
-1. **隐私脱敏**：扫描 `memory/` 下的 Markdown，命中项就地打码，不询问、不中断；
+1. **隐私脱敏**：扫描 `memory/` 下的 Markdown，命中项就地打码，不询问、不中断（日期记忆本身不上传，扫描只针对会入库的 `GLOBAL.md` 等）；
 2. 把所有 `.git` 改名成 `.git-backup`、子目录的 `.gitignore` 改名成 `.gitignore-backup`；
 3. `git add -A` → 按实际变动生成 Angular 提交信息 → `commit`；
 4. 推送前用 `git fetch` 取回远程比对历史：远端领先或分叉立即终止；

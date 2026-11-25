@@ -14,6 +14,7 @@
 
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -37,7 +38,7 @@ HIDDEN_IGNORE = ".gitignore-backup"   # 备份期间的 .gitignore 临时名
 STAGE_DIR = "bak"               # 还原时旧内容的暂存目录
 
 IGNORE_LINES = [
-    "# minis-git-backup 自动生成：除暂存与可重建缓存，其余全部入库",
+    "# minis-git-backup 自动生成：除暂存、可重建缓存与隐私内容，其余全部入库",
     "",
     "# 还原时旧内容的暂存区，与备份重复",
     "bak/",
@@ -46,6 +47,10 @@ IGNORE_LINES = [
     "__pycache__/",
     "*.pyc",
     ".DS_Store",
+    "",
+    "# memory 的日期记忆（YYYY-MM-DD.md）含工作细节与隐私，不上传；",
+    "# GLOBAL.md / SOUL.md 这类配置仍照常备份",
+    "memory/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md",
 ]
 
 
@@ -352,6 +357,18 @@ def heal_leftover(root):
 
 
 # ---------------------------------------------------------------- 隐私扫描
+
+_DATE_MEMORY = re.compile(r"^\d{4}-\d{2}-\d{2}\.md$")
+
+
+def is_private_memory(relpath):
+    """memory/ 下的日期记忆（YYYY-MM-DD.md）属于隐私，不备份、不上传。
+
+    只认 memory 目录直接子文件，避免误伤别处同名文件。
+    """
+    parts = relpath.replace(os.sep, "/").split("/")
+    return len(parts) == 2 and parts[0] == "memory" and bool(_DATE_MEMORY.match(parts[1]))
+
 
 def memory_files(root):
     """memory/ 下所有 Markdown 文件。"""
@@ -705,6 +722,9 @@ def verify_remote(root, url, tok, branch, hidden):
             unhide_in_stage(local_view)
 
             local_digest = tree_digest(local_view, rel_skip=(".git", STAGE_DIR))
+            # 隐私记忆按设计不上传，比对基准里同样剔除，否则会误报「远程缺少」
+            local_digest = {k: v for k, v in local_digest.items()
+                            if not is_private_memory(k)}
             remote_digest = tree_digest(stage, rel_skip=(".git", STAGE_DIR))
 
             # missing：本地有、远程没有 → 备份丢了内容，必须失败
@@ -806,6 +826,11 @@ def cmd_backup(args, root):
             print("  %s" % os.path.relpath(p, root))
         if len(parents) > 10:
             print("  … 共 %d 个" % len(parents))
+        skipped = [os.path.relpath(p, root) for p in memory_files(root)
+                   if is_private_memory(os.path.relpath(p, root))]
+        if skipped:
+            print("隐私记忆 %d 个不上传（memory/ 下的日期文件）：%s"
+                  % (len(skipped), "、".join(os.path.basename(x) for x in skipped[:5])))
         if fixable:
             print("预演发现 memory 有 %d 处需脱敏（实际提交时会自动打码）" % fixable)
         elif hits:
@@ -813,6 +838,10 @@ def cmd_backup(args, root):
         print("（预演，未提交、未改名）")
         return RC_OK
 
+    skipped = [p for p in memory_files(root)
+               if is_private_memory(os.path.relpath(p, root))]
+    if skipped:
+        print("隐私记忆 %d 个不上传（memory/ 下的日期文件）" % len(skipped))
     if fixable:
         print("提交前已脱敏 %d 处（%d 个文件）" % (fixable, changed))
     elif hits:

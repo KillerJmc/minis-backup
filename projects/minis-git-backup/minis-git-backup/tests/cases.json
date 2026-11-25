@@ -121,5 +121,13 @@
     "expect": [
       "备份"
     ]
+  },
+  {
+    "name": "T16 memory 日期记忆不上传，GLOBAL/SOUL 照常备份",
+    "kind": "memory-private",
+    "expect": [
+      "隐私记忆",
+      "已提交"
+    ]
   }
 ]

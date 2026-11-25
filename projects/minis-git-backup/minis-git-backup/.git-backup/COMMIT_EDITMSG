@@ -1,6 +1,5 @@
-fix(backup): v2.0.1 修正 init 预演输出与 v1 文档残留
+feat(backup): v2.1.0 memory 日期记忆不再上传
 
-- 推送收尾提示 git status 里 .git-backup 显示已删除属正常现象
-- init --dry 不再说「已创建：无」，改为明说未写入
-- 纠正 SKILL.md 里 .archives/ 与「忽略 projects/」的 v1 旧表述
-- 测试 T1 自带过期 .gitignore，不依赖真实挂载当前状态
+- memory/ 下 YYYY-MM-DD.md 视为隐私，.gitignore 排除、回验基准同步剔除
+- GLOBAL.md / SOUL.md 等配置照常备份
+- 新增 T16 用例验证排除生效且配置类记忆仍入库

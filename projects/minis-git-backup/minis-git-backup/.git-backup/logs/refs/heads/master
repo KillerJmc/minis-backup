@@ -4,3 +4,4 @@
 3509cfc48073ed1bf9bcb54f0a6fac96a18c228c d927d1a805d9ba0b3fed19db653a578b3f55fc64 Minis Agent <agent@local> 1795518093 +0800	commit: release(minis-git-backup): v1.1.0
 d927d1a805d9ba0b3fed19db653a578b3f55fc64 6345e17fe088861ff4e69c39ea7633b432b8451d Minis <a@b> 1795544840 +0800	commit: feat(backup): v2.0.0 备份改名为 .git-backup 跟踪，回验以本地为基准
 6345e17fe088861ff4e69c39ea7633b432b8451d 1222cee7a278821bd3380038fd3e000501113165 Minis <a@b> 1795547402 +0800	commit: fix(backup): v2.0.1 修正 init 预演输出与 v1 文档残留
+1222cee7a278821bd3380038fd3e000501113165 201418d0887afca60d93ab2a246b010f7c6ce395 Minis <a@b> 1795617843 +0800	commit: feat(backup): v2.1.0 memory 日期记忆不再上传

@@ -521,6 +521,31 @@ def case_message(mount, c):
     return ok, why, subject
 
 
+def case_memory_private(mount, c):
+    """memory 下的日期记忆不上传；GLOBAL/SOUL 照常备份。"""
+    prepare_repo(mount)
+    run("init", mount)
+    add_change(mount)
+    mdir = os.path.join(mount, "memory")
+    os.makedirs(mdir, exist_ok=True)
+    with open(os.path.join(mdir, "2026-01-01.md"), "w", encoding="utf-8") as f:
+        f.write("今天的私密工作记录\n")
+    with open(os.path.join(mdir, "GLOBAL.md"), "w", encoding="utf-8") as f:
+        f.write("# 全局约定\n")
+    env = {"BACKUP_GIT_REPO": "tester/minis-backup"}
+    rc, out = run("backup --local", mount, env)
+    ok, why = check(c["expect"], rc, out, c.get("rc", 0))
+
+    tracked = git(mount, "ls-files").splitlines()
+    if any(t == "memory/2026-01-01.md" for t in tracked):
+        ok = False
+        why.append("日期记忆被提交了，应当排除")
+    if not any(t == "memory/GLOBAL.md" for t in tracked):
+        ok = False
+        why.append("GLOBAL.md 没进备份，配置类记忆应照常上传")
+    return ok, why, out
+
+
 RUNNERS = {
     "init": case_init,
     "init-dry": case_init_dry,
@@ -536,6 +561,7 @@ RUNNERS = {
     "restore-repo": case_restore_repo,
     "scan-dirty": case_scan_dirty,
     "message": case_message,
+    "memory-private": case_memory_private,
 }
 
 

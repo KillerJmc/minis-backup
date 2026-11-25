@@ -1,4 +1,4 @@
-# minis-git-backup 自动生成：除暂存与可重建缓存，其余全部入库
+# minis-git-backup 自动生成：除暂存、可重建缓存与隐私内容，其余全部入库
 
 # 还原时旧内容的暂存区，与备份重复
 bak/
@@ -7,3 +7,7 @@ bak/
 __pycache__/
 *.pyc
 .DS_Store
+
+# memory 的日期记忆（YYYY-MM-DD.md）含工作细节与隐私，不上传；
+# GLOBAL.md / SOUL.md 这类配置仍照常备份
+memory/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md

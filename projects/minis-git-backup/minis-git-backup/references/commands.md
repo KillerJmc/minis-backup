@@ -61,7 +61,7 @@ backup.py backup [--local] [--dry] [-m <message>] [--remote <url>]
 流程：
 
 1. 同步 `.gitignore`；修复上次异常中断残留的 `.git-backup`
-2. `memory/` 脱敏（静默）
+2. `memory/` 脱敏（静默）；`memory/` 下的日期记忆（`YYYY-MM-DD.md`）不备份
 3. 所有 `.git` → `.git-backup`；所有子目录 `.gitignore` → `.gitignore-backup`
 4. `git add -A` → 生成提交信息 → `commit`
 5. `git fetch` 取远程比对历史：远端领先或分叉即终止
