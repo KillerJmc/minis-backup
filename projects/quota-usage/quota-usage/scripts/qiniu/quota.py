@@ -31,11 +31,11 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 PORTAL = "https://portal.qiniu.com"
 API = "https://api.qnaigc.com"
-CONFIG_PATH = os.environ.get("QN_CONFIG", "/var/minis/shared/qiniu-quota/config.json")
+CONFIG_PATH = os.environ.get("QN_CONFIG", "/var/minis/shared/quota/qiniu.json")
 UA = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
@@ -106,6 +106,18 @@ def stat(cfg: dict, start: date, end: date, gran: str = "day") -> list[dict]:
     return rows
 
 
+def fmt(n, unit: str = "token") -> str:
+    """1 亿以上用「亿」，1 万以上用「万」，其余原样。与麦块云一致。"""
+    n = float(n or 0)
+    if unit == "token":
+        if n >= 1e8:
+            return f"{n / 1e8:.2f} 亿"
+        if n >= 1e4:
+            return f"{n / 1e4:.2f} 万"
+        return f"{n:.0f}"
+    return f"{n:.0f}"
+
+
 def collect(cfg: dict) -> dict:
     cid = cfg.get("campaign_id") or "1024-free"
     quota = portal_get(f"/api/proxy/ai-inference/inapi/v1/free-model-campaigns/{cid}/quota", cfg)
@@ -119,19 +131,17 @@ def collect(cfg: dict) -> dict:
     today = date.today()
     today_rows = stat(cfg, today, today)
     used_today = sum(r["total"] for r in today_rows)
+    win_rows = stat(cfg, today - timedelta(days=2), today)   # 含今日共 3 天
+    used_win = sum(r["total"] for r in win_rows)
 
     limit = int(quota.get("limit") or 0)
     # 活动额度接口的 used 不可信，用真实统计覆盖
     remaining = max(limit - int(used_today), 0) if limit else int(quota.get("remaining") or 0)
-
+    used = int(used_today) if limit else int(quota.get("used") or 0)
 
     return {
         "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "user": {
-            "name": user.get("full_name"),
-            "mobile": user.get("mobile"),
-            "balance_yuan": user.get("balance"),
-        },
+        "user": {"balance_yuan": user.get("balance")},
         "campaign": {
             "id": avail.get("campaign_id") or cid,
             "model": avail.get("user_model") or cfg.get("user_model"),
@@ -142,64 +152,51 @@ def collect(cfg: dict) -> dict:
         },
         "quota": {
             "limit": limit,
-            "used": int(used_today),
+            "used": used,
             "remaining": remaining,
             "reset_at": quota.get("reset_at"),
         },
         "today": {
-            "input": sum(r["input"] for r in today_rows),
             "cache": sum(r["cache"] for r in today_rows),
+            "input": sum(r["input"] for r in today_rows),
             "output": sum(r["output"] for r in today_rows),
-            "models": sorted(today_rows, key=lambda x: -x["total"])[:5],
+            "total": int(used_today),
+            "models": sorted(
+                ({"model": k, "total": sum(x["total"] for x in today_rows if x["model"] == k)}
+                 for k in {r["model"] for r in today_rows}),
+                key=lambda x: -x["total"],
+            ),
         },
+        "window": {"days": 3, "total": int(used_win)},
         "keys": [
-            {"name": k.get("name"), "total_tokens": k.get("totalTokens"),
-             "last_used": k.get("lastUsed"), "enabled": k.get("enabled")}
-            for k in keys
+            {"name": k.get("name"),
+             "total_tokens": k.get("totalTokens"),
+             "last_used": k.get("lastUsed")}
+            for k in keys if isinstance(k, dict)
         ],
     }
 
 
-def fmt(n, unit: str = "token") -> str:
-    n = float(n or 0)
-    if unit == "token":
-        if n >= 1e8:
-            return f"{n / 1e8:.2f} 亿"
-        if n >= 1e4:
-            return f"{n / 1e4:.2f} 万"
-        return f"{n:.0f}"
-    return f"{n:.0f}"
-
-
 def render(d: dict) -> str:
-    q, c, u, t = d["quota"], d["campaign"], d["user"], d["today"]
-    pct = (q["used"] / q["limit"] * 100) if q["limit"] else 0
-    cache_rate = (t["cache"] / (t["cache"] + t["input"]) * 100) if (t["cache"] + t["input"]) else 0
+    """与麦块云同构：标题 → 💰 额度（已用·剩余·总量 + 今日/近3天消耗）→ 💳 账户。"""
+    q, c, t, w = d["quota"], d["campaign"], d["today"], d["window"]
+
     lines = [
-        f"七牛额度（{d['checked_at']}）：{u.get('name')}（{u.get('mobile')}）",
-        f"  今日剩余 {fmt(q['remaining'])} / 上限 {fmt(q['limit'])}"
-        f"（已用 {fmt(q['used'])}，{pct:.2f}%）",
-        f"  缓存输入 {fmt(t['cache'])} ｜ 非缓存输入 {fmt(t['input'])} ｜ 输出 {fmt(t['output'])}",
-        f"  缓存命中率 {cache_rate:.1f}% ｜ 账户余额 ¥{u.get('balance_yuan')}",
-        f"  模型 {c.get('model')} ｜ 活动 {c.get('id')}"
-        f"（{str(c.get('start_at'))[:10]} ~ {str(c.get('end_at'))[:10]}）",
+        "七牛额度",
+        "",
+        "💰 额度",
+        "",
+        f"- 已用 {fmt(q['used'])} · 剩余 {fmt(q['remaining'])} · 总量 {fmt(q['limit'])}",
+        f"- 今日消耗 {fmt(t['total'])} · 近 {w['days']} 天消耗 {fmt(w['total'])}",
+        "",
+        "💳 账户",
+        "",
+        f"- 到期 {str(c.get('end_at'))[:10]}",
+        f"- 余额 ¥{d['user'].get('balance_yuan')}",
     ]
-    if c.get("callable"):
-        lines.append(f"  重置时间 {str(q.get('reset_at'))[:10]} ｜ ✅ 当前可调用")
-    else:
-        lines.append(f"  ⚠️ 当前不可调用（status={c.get('status')}）")
-
-    if t["models"]:
-        top = t["models"][0]
-        lines.append(f"消耗最高 {top['model']}：{fmt(top['total'])} token")
-
-    if d.get("keys"):
-        k = d["keys"][0]
-        total = k.get("total_tokens") or 0
-        lines.append(f"Key {k.get('name')}（{k.get('last_used')}）：累计 {fmt(total)} token")
 
     if q["remaining"] == 0:
-        lines.append("⚠️ 免费额度已用完，请求将被拒绝（需改用付费渠道）")
+        lines += ["", "⚠️ 免费额度已用完，请求将被拒绝（需改用付费渠道）"]
     return "\n".join(lines)
 
 

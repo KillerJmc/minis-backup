@@ -11,12 +11,27 @@
 | 平台标识 | 小写单词，同时是 `scripts/` 下的子目录名 | `minekuai` / `modelscope` / `qiniu` |
 | 脚本目录 | `scripts/<平台>/`，各平台的 `quota.py` 可同名互不干扰 | `scripts/minekuai/quota.py` |
 | 脚本 | 一个文件一件事 | `quota.py` / `checkin.py` / `login.py` |
-| 配置 | `/var/minis/shared/<缩写>-quota/config.json`，0600 | `mk-quota` |
+| 配置 | `/var/minis/shared/quota/<平台>.json`，目录 0700、文件 0600 | `quota/minekuai.json` |
+| 账号凭证 | 环境变量 `QUOTA_<平台大写>_CRED`，格式「账号；密码」或只填手机号 | `QUOTA_MIAOTOKEN_CRED` |
 
 改名要同步五处：目录名、`SKILL.md` 的 `name`、文档里的绝对路径、
 其他技能对它的引用、挂载镜像（先删旧目录再 push）。
 
 配置路径**不跟改名**，否则已有登录态全部失效。
+
+## 账号不写配置文件
+
+所有平台的账号（手机号、邮箱、用户名）只从环境变量读，配置文件仅存登录态。
+
+| 平台 | 变量 | 格式 |
+|---|---|---|
+| minekuai | `QUOTA_MINEKUAI_CRED` | 只填手机号 |
+| modelscope | `QUOTA_MODELSCOPE_CRED` | 只填手机号 |
+| qiniu | `QUOTA_QINIU_CRED` | `账号；密码` |
+| miaotoken | `QUOTA_MIAOTOKEN_CRED` | `账号；密码` |
+
+分隔符认英文分号、中文分号、空格，按第一个出现的切开；无分隔符时整段视为账号。
+解析逻辑统一在 `scripts/credentials.py`，各平台脚本不得自行拆分字符串。
 
 ## 六步流程
 

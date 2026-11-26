@@ -8,3 +8,5 @@ ce8dfe5f4ab443f2f57666b32dbf9ea255f112dd 4fd27887c7fe929a7f46d9a3d9c8cef212d13a0
 6048462c73892284632c7c566ff7bb3a6b162ebb 55d77093e92948ccc3ea5cb19ab475b4ba72b28e Minis Agent <agent@local> 1795518649 +0800	commit: docs(progress): v1.1.0 已上线，22 项测试全绿
 55d77093e92948ccc3ea5cb19ab475b4ba72b28e e5998901f35177478c483278ff43fc99efa477f0 Minis <a@b> 1795545338 +0800	commit: docs(progress): v2.0.0 已上线，测试 15 项全绿
 e5998901f35177478c483278ff43fc99efa477f0 da6ff779f15f4915c19a4fb0d0ed8901e7c0a7bc Minis <a@b> 1795548054 +0800	commit: docs(progress): v2.0.1 已上线，核对 dist 保留规则
+da6ff779f15f4915c19a4fb0d0ed8901e7c0a7bc 7c268f88ba1756914c2f64fd151c1dc0b555cfbd Minis <a@b> 1795618946 +0800	commit: docs(progress): v2.1.0 已上线，日期记忆从远端 HEAD 移除，历史待决定
+7c268f88ba1756914c2f64fd151c1dc0b555cfbd 69d301dd7b455bc78f70bdec1e377b75fd44c919 Minis <a@b> 1795677464 +0800	commit: docs(progress): 历史提交不重写，用户确认无敏感字段

@@ -7,3 +7,6 @@ b40c248bc3b2e3c750042e3bbd78c80a6bba1e99 09fb6d2b68d86eeec9b80daad8af4708981041e
 7f35c38626d4b25e1f7edd532bd88fc8c74fa641 9932df0b1c0485d9a391141737b769a935752d1c Minis Agent <agent@local> 1795457852 +0800	filter-branch: rewrite
 9932df0b1c0485d9a391141737b769a935752d1c 2572d27778d5e990bcdcc2135986ab9abdded93b Minis Agent <agent@local> 1795501116 +0800	commit: docs(dev-workflow): 部署改走共享脚本并补提交规范
 2572d27778d5e990bcdcc2135986ab9abdded93b 63c9860a6da8858e80ae8aa6a88d1be1d3bd1791 Minis Agent <agent@local> 1795514104 +0800	commit: release(quota-usage): v1.3.2
+63c9860a6da8858e80ae8aa6a88d1be1d3bd1791 60862a9e49158342c6293ea3fc20cc72f6004b4f Minis Agent <agent@local> 1795679225 +0800	commit: release(quota-usage): v1.4.0
+60862a9e49158342c6293ea3fc20cc72f6004b4f e934e157c14f2c0186b1d87daf4a36d570c186ed Minis Agent <agent@local> 1795690242 +0800	commit: release(quota-usage): v1.5.0
+e934e157c14f2c0186b1d87daf4a36d570c186ed 86b75c6dee1e157bba84c275f60fd4a0e6ae6856 Minis Agent <agent@local> 1795692618 +0800	commit: docs(triggers): 收窄触发词，去掉过宽与重复项

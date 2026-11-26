@@ -2,7 +2,13 @@
 """魔搭（ModelScope）每日签到 / 魔粒状态自动检查。
 
 纯 HTTP，无需浏览器：用配置文件里的 cookie 访问魔粒接口，
-读取「每日发放」类规则的今日发放状态，必要时访问首页触发服务端每日登录判定。
+读取「每日发放」类规则的今日发放状态，必要时触发服务端每日登录判定。
+
+触发分两级：
+  1. 纯 HTTP 访问 /home（快，多数情况下够用）
+  2. 仍不到账 → 自动开浏览器访问 /my/overview（前端渲染才真正触发判定）
+
+第二级由脚本自己调 minis-browser-use 完成，不需要用户操作。
 
 用法:
   python3 checkin.py            # 人类可读
@@ -52,6 +58,52 @@ def warmup(cfg: dict, timeout: int = 20) -> int:
         return r.status
 
 
+BROWSER_WAKE_URL = "https://modelscope.cn/my/overview"
+BROWSER_WAIT = 8  # 秒：浏览器页面加载后等判定入账
+
+
+def _browser(cmd: str, *args: str, timeout: int = 120) -> tuple[bool, str]:
+    """跑一条 minis-browser-use 命令，返回 (成功, 输出)。"""
+    import subprocess
+
+    try:
+        proc = subprocess.run(
+            ["minis-browser-use", cmd, *args],
+            capture_output=True, text=True, timeout=timeout,
+        )
+    except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+        return False, "命令执行失败"
+    out = (proc.stdout or "") + (proc.stderr or "")
+    ok = '"ok" : true' in out or '"ok": true' in out
+    return ok, out
+
+
+def wake_by_browser(timeout: int = 120) -> bool:
+    """开浏览器访问个人页，触发前端渲染侧的每日活跃判定。
+
+    纯 HTTP 拿到的只是 SPA 空壳，服务端不认；必须让前端 JS 跑起来。
+    标签页最多 3 个，到上限时先关掉自己开的那个再重试。
+    任何失败都返回 False，不抛异常。
+    """
+    # 先看标签页数，满了就关掉一个（先前 wake 留下的）
+    ok, out = _browser("list_tabs", timeout=30)
+    if ok and 'Tab 2:' in out:
+        _browser("close_tab", "--tab_id", "2", timeout=30)
+
+    ok, out = _browser("new_tab", "--url", BROWSER_WAKE_URL, timeout=timeout)
+    if not ok:
+        # 仍可能因上限失败，再试一次：关掉最后一个
+        nums = [n for n in ("2", "1", "0") if f"Tab {n}:" in out] or ["2"]
+        for tab in nums:
+            _browser("close_tab", "--tab_id", tab, timeout=30)
+        ok, out = _browser("new_tab", "--url", BROWSER_WAKE_URL, timeout=timeout)
+        if not ok:
+            return False
+
+    time.sleep(BROWSER_WAIT)
+    return True
+
+
 def daily_rules(cfg: dict) -> list[dict]:
     rules = api_get("/openapi/v1/magicubes/earn/rules", cfg)
     # api_get 已剥掉 data 层：正常是 list；个别版本返回 {"rules": [...]}
@@ -72,6 +124,18 @@ def collect(cfg: dict, retries: int = 3, delay: int = 4) -> dict:
             if not any(int(r.get("today_remain") or 0) > 0 for r in rules):
                 break
 
+    # 二级兜底：纯 HTTP 触发无效时开浏览器，让前端跑起来（仅在有未领取项时）
+    browser_wake = False
+    pending = [r for r in rules if int(r.get("today_remain") or 0) > 0]
+    if pending:
+        if wake_by_browser():
+            browser_wake = True
+            for i in range(retries):
+                time.sleep(delay)
+                rules = daily_rules(cfg)
+                if not any(int(r.get("today_remain") or 0) > 0 for r in rules):
+                    break
+
     bal = api_get("/openapi/v1/magicubes/balance", cfg)
     return {
         "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -82,6 +146,7 @@ def collect(cfg: dict, retries: int = 3, delay: int = 4) -> dict:
             "frozen": bal.get("frozen_amount"),
         },
         "warmup_status": warmup_status,
+        "browser_wake": browser_wake,
         "daily": [
             {
                 "key": r.get("rule_key"),
@@ -113,7 +178,7 @@ def render(data: dict) -> str:
     lines.append(f"今日合计发放：{got} 魔粒")
     pending = [x["title"] for x in d if not x["earned"]]
     if pending:
-        lines.append(f"⚠️ 未到账：{', '.join(pending)} —— 可能需重新登录或人工处理")
+        lines.append(f"⚠️ 未到账：{', '.join(pending)} —— 浏览器触发也没生效，多半是登录态失效")
     else:
         lines.append("✅ 今日签到完成")
     return "\n".join(lines)

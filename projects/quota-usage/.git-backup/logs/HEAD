@@ -18,3 +18,5 @@ e56228c41217f0f32a324c97cfc82bf5b3222e85 69f222421b3d415726c442a23612b6c9955a891
 69f222421b3d415726c442a23612b6c9955a891c 23f64dbbaec9acae511b2098aa3be95ba27a0faa Minis Agent <agent@local> 1795501210 +0800	commit: docs(progress): 记录 v1.3.1 发布
 23f64dbbaec9acae511b2098aa3be95ba27a0faa c6ec7dfec5863e81076438b16ee9aa1d755836a7 Minis Agent <agent@local> 1795502535 +0800	commit: fix(gitignore): 只排除技能目录，其余一律入库
 c6ec7dfec5863e81076438b16ee9aa1d755836a7 027b65cbe72898dd1cc412d05f3ec088cbfc845c Minis Agent <agent@local> 1795513864 +0800	commit: docs(project): 上线链路改述 release.py 两轮与 snapshot 校验
+027b65cbe72898dd1cc412d05f3ec088cbfc845c e79d83d5f4aa2ee5cf658e4bbbe4de2452f28548 Minis Agent <agent@local> 1795679234 +0800	commit: docs(progress): 记录 quota-usage v1.4.0 上线
+e79d83d5f4aa2ee5cf658e4bbbe4de2452f28548 00bad64d122daa47b3481d2548afbb858b65c3dc Minis Agent <agent@local> 1795692637 +0800	commit: docs(progress): 记录 v1.5.1 触发词收窄

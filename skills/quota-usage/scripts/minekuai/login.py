@@ -29,6 +29,9 @@ import sys
 import time
 import urllib.error
 import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import credentials  # noqa: E402
 from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -76,15 +79,8 @@ def login(phone: str, code: str) -> dict:
 def persist(token: str, phone: str | None, expire_in: int | None = None) -> int:
     cfg = {"access_token": token, "client_id": CLIENT_ID, "saved_at":
            datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-    if phone:
-        cfg["phone"] = phone
     if expire_in:
         cfg["expire_in"] = expire_in
-    try:
-        old = load_config()
-        cfg.setdefault("phone", old.get("phone"))
-    except SystemExit:
-        pass
 
     try:
         tok = api("/app/token", cfg)
@@ -99,7 +95,6 @@ def persist(token: str, phone: str | None, expire_in: int | None = None) -> int:
     print(json.dumps({
         "saved_to": CONFIG_PATH,
         "user": mem.get("nickname"),
-        "phone": mem.get("phoneMasked"),
         "remaining_tokens": remaining,
     }, ensure_ascii=False))
     return 0
@@ -107,7 +102,7 @@ def persist(token: str, phone: str | None, expire_in: int | None = None) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="麦块云登录（纯 HTTP）")
-    ap.add_argument("--phone")
+    ap.add_argument("--phone", help="手机号；省略则读环境变量 QUOTA_MINEKUAI_CRED")
     ap.add_argument("--code")
     ap.add_argument("--token", help="已有 token 直接落盘")
     ap.add_argument("--send-only", action="store_true", help="只发验证码")
@@ -116,9 +111,14 @@ def main() -> int:
     if args.token:
         return persist(args.token.strip(), args.phone)
 
-    if not args.phone:
-        print("需要 --phone", file=sys.stderr)
-        return 4
+    phone = args.phone
+    if not phone:
+        try:
+            phone, _ = credentials.load("minekuai")
+        except credentials.CredentialError as exc:
+            print(f"缺少凭证：{exc}", file=sys.stderr)
+            return 4
+        args.phone = phone
 
     if not args.code or args.send_only:
         try:
@@ -132,7 +132,7 @@ def main() -> int:
         if r.get("code") != 200:
             print(f"发码失败：[{r.get('code')}] {r.get('msg')}", file=sys.stderr)
             return 2
-        print(f"✅ 验证码已发送到 {args.phone}（60 秒内只能发一次）")
+        print(f"✅ 验证码已发送到 {credentials.masked_account('minekuai') or '***'}（60 秒内只能发一次）")
         if args.send_only:
             return 0
         code = input("请输入 6 位验证码：").strip()

@@ -5,7 +5,7 @@
 
 站点：`https://portal.qiniu.com` ｜ API：`https://api.qnaigc.com/v1`
 额度接口：`portal.qiniu.com/api/proxy/...`
-配置：`/var/minis/shared/qiniu-quota/config.json`（`QN_CONFIG` 可覆盖，0600）
+配置：`/var/minis/shared/quota/qiniu.json`（`QN_CONFIG` 可覆盖，0600）
 登录：只需要一个 Cookie `PORTAL_SESSION`，流程见 [`qiniu-relogin.md`](qiniu-relogin.md)
 
 ## 关键接口
@@ -15,6 +15,25 @@
 | 活动额度 | `api/proxy/free-model-campaigns/<id>/quota` | `total` / `used`（**used 恒为 0，别信**） |
 | 真实消耗 | `api/proxy/v3/stat/new` | 返回 **K token**，需 ×1000 |
 | Key 汇总 | `api/proxy/v3/apikeys?with_quota=true` | `totalTokens` |
+
+## 输出结构
+
+```
+七牛额度
+
+💰 额度
+
+- 已用 A · 剩余 B · 总量 C
+- 今日消耗 D · 近 3 天消耗 E
+
+💳 账户
+
+- 到期 YYYY-MM-DD
+- 余额 ¥N
+```
+
+- 到期时间取 `availability.end_at`（`2026-12-30T23:59:59+08:00`，取前 10 位）
+- 账户区不写模型、重置时间、Key 累计；平台无签到，不写签到行
 
 ## 额度口径
 

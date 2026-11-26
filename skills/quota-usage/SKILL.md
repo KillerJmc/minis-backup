@@ -1,8 +1,8 @@
 ---
 name: quota-usage
 description: 额度查询，每日签到，平台列表
-version: 1.3.2
-triggers: 额度,余额,签到,每日签到,消耗,魔粒,麦块,魔搭,七牛,quota
+version: 1.5.1
+triggers: 额度,余额,签到,quota,麦块,魔搭,七牛,妙词元
 ---
 
 额度查询，每日签到，平台列表。
@@ -34,7 +34,7 @@ python3 scripts/route.py quota --all             # 仅当用户明确说「都�
 示例（数字仅示意）：
 
 ```
-麦块云额度 · <昵称>（<手机>）
+麦块云额度 · <昵称>
 
 💰 付费额度（按量付费）
 
@@ -57,6 +57,37 @@ python3 scripts/route.py quota --all             # 仅当用户明确说「都�
 额度超过 1 亿显示为「亿」，1 万以上为「万」。今日池每天清零，所以没有跨天概念；
 永久池的消耗在调用明细里记为 `lite_token` 通道，今日池记为 `default`，付费记为 `paygo`。
 
+**妙词元**只有一个额度池，输出形如（数字仅示意）：
+
+```
+妙词元额度 · <用户名>
+
+💰 额度
+
+- 已用 A · 剩余 B（<基准模型> ¥C/百万）
+- 今日消耗 D · 近 3 天消耗 E
+
+💳 账户
+
+- 现金 ¥F
+```
+
+它的额度以「钱」计而不是 token，所以**已用是日志三类累加（实测），剩余是把现金按基准模型
+未命中输入单价折算的估算值**，两者口径不同，故不输出「总量」。剩余后面的括号注明基准模型与单价。
+
+**四个平台的输出结构统一**：标题一行 → `💰 额度`（三槽位「已用 · 剩余 · 总量」+「今日消耗 · 近 N 天消耗」）→ `💳 账户`。
+单位统一：≥1 亿用「亿」，≥1 万用「万」，0 写 `0`。
+
+| 平台 | 额度区 | 账户区 |
+|---|---|---|
+| 麦块云 | `💰 付费额度` + `🎁 免费额度`（今日池 / 永久池） | 鱼币、现金、签到 |
+| 魔搭 | `💰 魔粒额度`（三层同构，总量与已用均排除「过期回收」） | 签到、今日调用次数 |
+| 七牛 | `💰 额度`（活动每日额度） | 到期时间、余额 |
+| 妙词元 | `💰 额度` | 现金 |
+
+**签到只在平台确实有签到机制时才写**：麦块云（鱼币签到）、魔搭（每日登录发放 200 魔粒）；
+七牛与妙词元没有签到，不写这一行。
+
 `--json` 的结构见 [`references/commands.md`](references/commands.md)。
 
 **出错怎么办**：`3` 登录态失效，按平台读 `references/<平台>-relogin.md` 重新登录；
@@ -77,7 +108,8 @@ python3 scripts/route.py checkin --no-exchange   # 只签到，不兑换
 所以**不要**再补一条兑换命令——兑换单位已归零，重复跑只会显示「鱼币不足」。
 魔搭没有签到按钮也没有签到接口，机制是「当天首次带登录态访问站点时服务端发放」，已按此实现。
 
-**出错怎么办**：`3` 登录态失效（魔搭必须走浏览器，见 `references/modelscope-relogin.md`）；
+**出错怎么办**：`3` 登录态失效，读 `references/modelscope-relogin.md` 走登录流程
+（助手操作浏览器，用户只需报 6 位验证码）；
 `2` 已签到但兑换未成功，通常是平台暂停了兑换通道，不是本地问题。
 
 ## 平台列表
@@ -104,14 +136,40 @@ python3 scripts/route.py list --json
 | 参数、退出码、JSON 结构、已知限制 | [`references/commands.md`](references/commands.md) |
 | 给新平台加实现的流程与脚本约定 | [`references/dev-workflow.md`](references/dev-workflow.md) |
 | 麦块云：接口与字段速查 | [`references/minekuai-api.md`](references/minekuai-api.md) |
-| 魔搭：接口速查 / 登录失效流程 | [`references/modelscope-api.md`](references/modelscope-api.md)、[`modelscope-relogin.md`](references/modelscope-relogin.md) |
+| 妙词元：接口与字段速查 / 登录失效流程 | [`references/miaotoken-api.md`](references/miaotoken-api.md)、[`miaotoken-relogin.md`](references/miaotoken-relogin.md) |
+| 魔搭：接口速查 / 登录流程（含浏览器操作脚本） | [`references/modelscope-api.md`](references/modelscope-api.md)、[`modelscope-relogin.md`](references/modelscope-relogin.md)、`scripts/modelscope/login_helper.py` |
 | 七牛：接口速查 / 登录失效流程 | [`references/qiniu-api.md`](references/qiniu-api.md)、[`qiniu-relogin.md`](references/qiniu-relogin.md) |
+
+## 谁做什么（铁律）
+
+**用户只做一件事：填环境变量。** 除此之外的任何操作都由助手完成。
+
+| 环节 | 助手 | 用户 |
+|---|---|---|
+| 查额度 / 签到 | 全部 | 无 |
+| 首次登录 / 登录态失效 | 打开浏览器、填账号、点发码、提交、取 cookie、落盘 | **无** |
+| 账号口令 | — | 填 `QUOTA_<平台>_CRED`（一次性，长期有效） |
+| 短信验证码 | 点“发送”、等用户报 6 位码 | 报 6 位数字 |
+| 浏览器登录页操作 | 导航、填表单、处理风控页、从 cookie 提取登录态 | 无 |
+
+**禁止要求用户做的事**：敲命令、开终端、手动导出 cookie、复制 token、
+自己登录后把凭证发来、按格式拼字符串。
+
+**允许要求用户提供的只有两样**：
+1. 一次性填环境变量（给现成的链接和备注）
+2. 短信验证码 6 位数字
+
+用户能力前提按**非技术用户**设计：不知道终端、不知道 cookie 是什么、
+不会看开发者工具。任何需要这些知识的步骤都是设计缺陷，应改为助手代劳。
 
 ## 执行约束
 
-- **不主动用 `--all`**：三个平台各有独立登录态与额度，用户问「我的额度」时查的就是当前在用的那个。
+- **不主动用 `--all`**：四个平台各有独立登录态与额度，用户问「我的额度」时查的就是当前在用的那个。
 - **平台靠域名判定**：读 `minis-config` 的 `session.primaryModel` → `groups` → `providers.customBaseURL`，
   按域名匹配平台；provider 的 label 用户可改，不作依据。
+- **账号只从环境变量取**：`QUOTA_<平台大写>_CRED`，格式「账号；密码」或只填手机号。
+  配置文件只存登录态，不写手机号与邮箱；需要账号时读变量，缺变量时给出创建链接。
+- **不显示账号**：输出首行只写昵称/用户名；确需指代账号时用打码形式（`credentials.masked_account`）。
 - **不要重跑兑换脚本**：`checkin` 已含兑换，重复跑只会报「鱼币不足」。
 - 平台脚本可单独调用（调试用），退出码与入口一致，见 `references/commands.md`。
 - 测试：`python3 tests/run.py`（离线）/ `--live`（含联网），末行须为「失败 0 项」。

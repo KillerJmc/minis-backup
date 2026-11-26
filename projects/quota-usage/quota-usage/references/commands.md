@@ -27,6 +27,7 @@ python3 scripts/route.py list            # 列出支持的平台与登录态状�
 | 平台 | 标识 | 别名 |
 |---|---|---|
 | 麦块云 | `minekuai` | `mk`、`maikuai`、`麦块`、`麦块云` |
+| 妙词元 | `miaotoken` | `mt`、`妙词`、`妙词元`、`miaoci` |
 | 魔搭 | `modelscope` | `ms`、`moda`、`魔搭`、`魔塔` |
 | 七牛 | `qiniu` | `qn`、`七牛`、`七牛云`、`qnaigc`、`conatus` |
 
@@ -45,6 +46,7 @@ python3 scripts/route.py list            # 列出支持的平台与登录态状�
 | 2 | 需人工介入（业务失败、额度未到账、已签到未兑换） | 读输出里的原因 |
 | 3 | 登录态失效 | 读该平台 `references/<平台>-relogin.md` 重新登录 |
 | 4 | 配置缺失 | 按输出提示先登录一次 |
+| 5 | 触发站点限流（妙词元登录/刷新过密） | 等 90 秒后重试，日常查询不会触发 |
 
 `--all` 时取最严重的一个，顺序 `3 > 4 > 2 > 1 > 0`；单个平台失败不中断其余。
 
@@ -79,6 +81,7 @@ python3 scripts/route.py list            # 列出支持的平台与登录态状�
 | 平台 | 顶层字段 |
 |---|---|
 | minekuai | `checked_at` / `user` / `tokens` / `cash` / `coins` / `checkin` / `exchange` / `usage` / `paid` |
+| miaotoken | `checked_at` / `user` / `cash` / `tokens` / `baseline` / `remain_tokens` / `keys` |
 | modelscope | `checked_at` / `user` / `magicubes` / `cost` / `checkin` |
 | qiniu | `checked_at` / `account` / `quota` / `stats` / `checkin` |
 
@@ -106,13 +109,19 @@ minis-config get providers              →  customBaseURL / label
 
 ## 配置与登录态
 
-| 平台 | 配置文件 | 登录方式 |
-|---|---|---|
-| minekuai | `/var/minis/shared/mk-quota/config.json` | 纯 HTTP：`scripts/minekuai/login.py --phone <号>` |
-| modelscope | `/var/minis/shared/msc-quota/config.json` | 浏览器，见 `references/modelscope-relogin.md` |
-| qiniu | `/var/minis/shared/qiniu-quota/config.json` | 浏览器或 `login.py`，见 `references/qiniu-relogin.md` |
+账号只从环境变量读，配置文件仅存登录态，权限 0600。
 
-配置可用环境变量覆盖：`MK_CONFIG` / `MSC_CONFIG` / `QN_CONFIG`（测试用）。
+| 平台 | 配置文件 | 账号变量 | 登录方式 |
+|---|---|---|---|
+| minekuai | `/var/minis/shared/quota/minekuai.json` | `QUOTA_MINEKUAI_CRED`（手机号） | `scripts/minekuai/login.py`（发码后填验证码） |
+| miaotoken | `/var/minis/shared/quota/miaotoken.json` | `QUOTA_MIAOTOKEN_CRED`（账号；密码） | `scripts/miaotoken/quota.py --login` |
+| modelscope | `/var/minis/shared/quota/modelscope.json` | `QUOTA_MODELSCOPE_CRED`（手机号） | 浏览器，见 `references/modelscope-relogin.md` |
+| qiniu | `/var/minis/shared/quota/qiniu.json` | `QUOTA_QINIU_CRED`（账号；密码） | 浏览器或 `login.py`，见 `references/qiniu-relogin.md` |
+
+变量值格式：`账号<分隔符>密码`，分隔符可用**英文分号、中文分号、空格**；
+短信验证码类平台只填手机号。解析见 `scripts/credentials.py`。
+
+配置可用环境变量覆盖：`MK_CONFIG` / `MT_CONFIG` / `MSC_CONFIG` / `QN_CONFIG`（测试用）。
 
 ## 直接调用平台脚本（调试用）
 

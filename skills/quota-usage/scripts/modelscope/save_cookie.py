@@ -11,7 +11,7 @@
   # 3) 直接给值（不推荐，会留在命令历史里）
   python3 save_cookie.py --value <m_session_id>
 
-可选 --phone 记录手机号，供下次自动发验证码使用。
+账号不写入配置；手机号从环境变量 QUOTA_MODELSCOPE_CRED 读。
 """
 from __future__ import annotations
 
@@ -53,7 +53,7 @@ def main() -> int:
     src.add_argument("--from-env", metavar="FILE")
     src.add_argument("--stdin", action="store_true")
     src.add_argument("--value")
-    ap.add_argument("--phone", help="记录手机号（可选）")
+    ap.add_argument("--phone", help="已废弃，手机号改从 QUOTA_MODELSCOPE_CRED 读")
     args = ap.parse_args()
 
     cookie = (
@@ -71,7 +71,6 @@ def main() -> int:
         old = load_config()
     except SystemExit:
         old = {}
-    cfg["phone"] = args.phone or old.get("phone")
     if args.from_env:
         cfg["cookies"] = all_cookies_from_env_file(args.from_env)
         raw = open(args.from_env, encoding="utf-8", errors="replace").read()
@@ -94,7 +93,6 @@ def main() -> int:
         json.dumps(
             {
                 "saved_to": CONFIG_PATH,
-                "phone": cfg.get("phone"),
                 "balance": bal.get("available_balance"),
             },
             ensure_ascii=False,

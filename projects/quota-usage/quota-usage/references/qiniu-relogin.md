@@ -7,9 +7,29 @@ SSID / PORTAL_UID 都**不是必需的**（实测去掉后接口照常返回）�
 
 ---
 
-## 方式一：账号密码（推荐，最省事）
+## 方式一：纯 HTTP 登录（助手全自动，用户零操作）
 
-实测 2026-11-21：一次通过，**没有弹图形验证码**。
+脚本已实现完整链路，**不需要打开浏览器**：
+
+```
+1) GET  web-api.qiniu.com/api/proxy/uc-biz/passport/public-key   取 RSA 公钥
+   （必须带 Referer/Origin: https://sso.qiniu.com，否则 403）
+2) 邮箱账号 → sign_in_type=1，username 用原文
+   手机账号 → 先 GET sso.qiniu.com/user-ids?phone_number=<号> 取 user_id，
+              sign_in_type=2，username 用该 user_id
+3) RSA/PKCS#1 v1.5 加密密码（纯 Python，scripts/qiniu/rsa.py）
+4) POST sso.qiniu.com/signin?client_id=&redirect_url=  取 PORTAL_SESSION
+```
+
+**已知门槛**：账号若存在未完成的「合规验证」，登录接口返回
+`HTTP 400 require compliance verification`（前端会跳 `/compliance-verification`）。
+这一步涉及身份核验，只能账号本人在浏览器里完成一次；完成后本流程即可全自动。
+
+## 方式一（旧）：浏览器账号密码
+
+账号与密码已存在环境变量 `QUOTA_QINIU_CRED`（格式 `账号；密码`），
+助手用 `credentials.load("qiniu", need_password=True)` 取出后直接填表，
+**不要**让用户输入、不要打印密码。
 
 ```
 1) 浏览器打开 https://sso.qiniu.com/
@@ -17,7 +37,7 @@ SSID / PORTAL_UID 都**不是必需的**（实测去掉后接口照常返回）�
    - 页面只有「账号密码登录」和「微信登录」两个 tab
 
 2) 填表：
-   #email    → 手机号（如 13681560565）
+   #email    → 手机号（如 13800000000）
    #password → 密码
    - 勾选协议（如有）
    - 图形验证码 #captcha 平时是 hidden 的，出现时才要认
@@ -32,7 +52,7 @@ SSID / PORTAL_UID 都**不是必需的**（实测去掉后接口照常返回）�
 
 5) 落盘：
    get_cookies keywords=PORTAL_SESSION  → env 文件
-   python3 .../login.py --from-env <env 文件> --phone <手机号>
+   python3 .../login.py --from-env <env 文件>
 
 6) 验证：
    python3 .../login.py --check
@@ -41,15 +61,16 @@ SSID / PORTAL_UID 都**不是必需的**（实测去掉后接口照常返回）�
 
 ---
 
-## 方式二：直接给值（最快）
+## 方式二：已有 cookie 时直接落盘
 
-用户能拿到 `PORTAL_SESSION` 时一步到位：
+助手从浏览器 cookie 取到 `PORTAL_SESSION` 后：
 
 ```sh
 python3 .../login.py --value <PORTAL_SESSION>
 ```
 
 `login.py` 会先打额度接口校验，**无效不覆盖**。
+**不要让用户提供这个值**——cookie 技术性强，属助手职责。
 
 ---
 
@@ -96,6 +117,6 @@ curl -s "https://web-api.qiniu.com/api/proxy/uc-biz/wx/mini-program/url-link?pat
 
 ## 当前账号信息
 
-- 账号：手机号 13681560565，主账号 uid 1383813297
-- 配置：`/var/minis/shared/qiniu-quota/config.json`（0600）
+- 账号：由环境变量 `QUOTA_QINIU_CRED` 提供，本文件不记录手机号与 uid
+- 配置：`/var/minis/shared/quota/qiniu.json`（0600），只存 `portal_session` / `campaign_id` / `user_model` / `saved_at`
 - 有效期：以七牛会话为准，实测可用多天；失效时重跑本流程

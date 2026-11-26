@@ -24,6 +24,7 @@ SKILL_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PROVIDER_MAP = [
     ("minekuai.cn", "minekuai"),
+    ("miaotoken.cn", "miaotoken"),
     ("modelscope.cn", "modelscope"),
     ("qnaigc.com", "qiniu"),
     ("portal.qiniu.com", "qiniu"),
@@ -38,8 +39,19 @@ PLATFORMS = {
         "login": "纯 HTTP（login.py --phone）",
         "site": "https://minekuai.cn",
         "console": "https://minekuai.cn/overview",
-        "config": "/var/minis/shared/mk-quota/config.json",
+        "config": "/var/minis/shared/quota/minekuai.json",
         "dir": os.path.join(SKILL_ROOT, "scripts", "minekuai"),
+    },
+    "miaotoken": {
+        "name": "妙词元",
+        "full": "MiaoToken",
+        "aliases": ["miaotoken", "mt", "妙词元", "妙词", "miaoci"],
+        "domains": ["miaotoken.cn", "api.miaotoken.cn"],
+        "login": "纯 HTTP（quota.py --login <账号> <密码>）",
+        "site": "https://api.miaotoken.cn",
+        "console": "https://api.miaotoken.cn/console",
+        "config": "/var/minis/shared/quota/miaotoken.json",
+        "dir": os.path.join(SKILL_ROOT, "scripts", "miaotoken"),
     },
     "modelscope": {
         "name": "魔搭",
@@ -49,7 +61,7 @@ PLATFORMS = {
         "login": "需要浏览器（references/relogin.md）",
         "site": "https://modelscope.cn",
         "console": "https://modelscope.cn/magicube/usage",
-        "config": "/var/minis/shared/msc-quota/config.json",
+        "config": "/var/minis/shared/quota/modelscope.json",
         "dir": os.path.join(SKILL_ROOT, "scripts", "modelscope"),
     },
     "qiniu": {
@@ -60,7 +72,7 @@ PLATFORMS = {
         "login": "浏览器登 portal.qiniu.com 后 login.py --from-env",
         "site": "https://portal.qiniu.com",
         "console": "https://portal.qiniu.com/ai-inference/model?id=qiniu/conatus-free",
-        "config": "/var/minis/shared/qiniu-quota/config.json",
+        "config": "/var/minis/shared/quota/qiniu.json",
         "dir": os.path.join(SKILL_ROOT, "scripts", "qiniu"),
     },
 }

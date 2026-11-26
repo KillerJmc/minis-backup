@@ -4,7 +4,7 @@
 > 在工程层 `docs/modelscope-api-research.md`，不随技能发布。
 
 站点：`https://modelscope.cn` ｜ 额度页：`https://modelscope.cn/magicube/usage`
-配置：`/var/minis/shared/msc-quota/config.json`（`MSC_CONFIG` 可覆盖，0600）
+配置：`/var/minis/shared/quota/modelscope.json`（`MSC_CONFIG` 可覆盖，0600）
 登录：**必须走浏览器**，流程见 [`modelscope-relogin.md`](modelscope-relogin.md)
 
 ## 关键接口
@@ -18,6 +18,45 @@
 | 发放规则 | `GET /openapi/v1/magicubes/earn/rules` | `category_key`、`today_used`、`today_remain` |
 
 `transactions` 的 `type` 取值：`SPEND_CONFIRM`、`EXPIRE`、`EARN`；分页用 `page` + `page_size`。
+
+## 签到触发（两级，全自动）
+
+魔搭的每日发放不是调接口拿的，而是「当天首次带登录态的**前端**访问」由服务端判定。
+纯 HTTP 只能拿到 4519 字节的 SPA 空壳，服务端不认，所以必须分两级：
+
+| 级别 | 做法 | 成功率 |
+|---|---|---|
+| 一级 | 纯 HTTP GET `/home` 带 `m_session_id` | 有时不生效 |
+| 二级 | `minis-browser-use new_tab` 打开 `https://modelscope.cn/my/overview`，让前端 JS 跑起来 | 实测有效 |
+
+`checkin.py` 已内置两级：一级失败自动走二级，**不需要用户操作**。
+判断依据：`earn/rules` 里 `category_key=daily` 的规则 `today_remain > 0`。
+
+**坑**：
+- 浏览器标签页上限 3 个，到顶时 `new_tab` 报 `Maximum of 3 tabs reached`；
+  脚本会先 `close_tab` 再重开
+- 刚换 cookie 后第一次签到必走二级：`passport.modelscope.cn` 的会话在主域还没生效
+- 二级完成后等约 8 秒再读 `earn/rules`，入账有延迟
+
+## 输出结构
+
+```
+魔搭额度
+
+💰 魔粒额度
+
+- 已用 A · 剩余 B · 总量 C
+- 今日消耗 D · 近 3 天消耗 E
+
+💳 账户
+
+- 签到：是/否
+- 今日调用 N 次 ｜ 近 3 天 M 次
+```
+
+- **总量与已用都排除「过期回收」**（`EXPIRE` 流水不计入任何一边），两者相加才与剩余闭合
+- 只有 `SPEND_CONFIRM` 计入已用；`earn/rules` 里 `category_key=daily` 的规则今日是否领取决定「签到」
+- 平台按次计费（旗舰档 2 魔粒/次），**接口不提供 token 数**，无法折算 token
 
 ## 额度口径
 

@@ -5,8 +5,9 @@
 
 站点：`https://minekuai.cn` ｜ 业务 API 前缀 `/app/*`（无 `/api`）
 推理网关：`https://ai-api.minekuai.cn/v1`（`api.minekuai.cn/v1` 已不是推理接口）
-配置：`/var/minis/shared/mk-quota/config.json`（`MK_CONFIG` 可覆盖，0600）
-登录：纯 HTTP，`scripts/minekuai/login.py --phone <号>`
+配置：`/var/minis/shared/quota/minekuai.json`（`MK_CONFIG` 可覆盖，0600）
+账号：环境变量 `QUOTA_MINEKUAI_CRED`（只填手机号，不写配置文件）
+登录：纯 HTTP，`scripts/minekuai/login.py` 发码 → `--code <6位>` 提交
 
 ## 关键接口
 

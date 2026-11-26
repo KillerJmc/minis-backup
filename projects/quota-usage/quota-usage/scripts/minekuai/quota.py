@@ -28,7 +28,7 @@ from datetime import datetime, timedelta
 
 BASE = "https://minekuai.cn"
 CLIENT_ID = "428a8310cd442757ae699df5d894f051"  # 前端写死的 member 端 clientid
-CONFIG_PATH = os.environ.get("MK_CONFIG", "/var/minis/shared/mk-quota/config.json")
+CONFIG_PATH = os.environ.get("MK_CONFIG", "/var/minis/shared/quota/minekuai.json")
 UA = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
@@ -172,7 +172,7 @@ def collect(cfg: dict) -> dict:
     usage = channel_usage(cfg, days=3)
     return {
         "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "user": {"nickname": mem.get("nickname"), "phone": mem.get("phoneMasked"),
+        "user": {"nickname": mem.get("nickname"),
                  "group": fish.get("groupName"), "banned": bool(mem.get("apiBanned"))},
         "tokens": {
             "remaining": tok.get("remaining"),
@@ -251,7 +251,7 @@ def render(d: dict) -> str:
     days = usage.get("days") or 3
 
     lines = [
-        f"麦块云额度 · {usr['nickname']}（{usr['phone']}）"
+        f"麦块云额度 · {usr['nickname']}"
     ]
 
     # ── 付费额度
