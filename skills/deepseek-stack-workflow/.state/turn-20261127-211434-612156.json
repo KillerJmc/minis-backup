@@ -1,0 +1,35 @@
+{
+ "turn_id": "20261127-211434-612156",
+ "status": "ROUTE_PENDING",
+ "baseline_total": 1990,
+ "created_at": "2026-11-27T21:14:34+08:00",
+ "updated_at": "2026-11-27T21:14:49+08:00",
+ "routes": [],
+ "reads": [
+  {
+   "skill": "ds-help",
+   "path": "/var/minis/mounts/Minis/projects/deepseek-stack-workflow/deepseek-stack-workflow/references/ds-help.md",
+   "source": "internal",
+   "bytes": 1567,
+   "lines": 44,
+   "md5": "0f3b81d6d4d274d796a23bc4f996d7b2",
+   "headings": [
+    "## Pick a skill",
+    "## Rules"
+   ],
+   "summary": "--- name: ds-help description: \"Pick the right deepseek-stack skill for a task and explain how the pack fits together. Use when the user asks which skill to use, what the pack contains, or types /ds-h",
+   "at": "2026-11-27T21:14:49+08:00",
+   "result": "ok"
+  }
+ ],
+ "plan": [],
+ "executions": [],
+ "verifications": [],
+ "blockers": [],
+ "failures": [],
+ "completion": null,
+ "checked_total": 1995,
+ "violations": [
+  "read ds-verify-loop → 标题「调用 ds-help：进行路由」缺技能名"
+ ]
+}

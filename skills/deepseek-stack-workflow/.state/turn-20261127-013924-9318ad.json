@@ -1,0 +1,14 @@
+{
+ "turn_id": "20261127-013924-9318ad",
+ "status": "ROUTE_PENDING",
+ "created_at": "2026-11-27T01:39:24+08:00",
+ "updated_at": "2026-11-27T01:39:24+08:00",
+ "routes": [],
+ "reads": [],
+ "plan": [],
+ "executions": [],
+ "verifications": [],
+ "blockers": [],
+ "failures": [],
+ "completion": null
+}

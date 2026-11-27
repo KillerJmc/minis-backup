@@ -1,0 +1,21 @@
+{
+ "turn_id": "20261128-030458-38411d",
+ "session_id": "5A976D3D-8322-4081-AB40-7663C0E477C6",
+ "anchor_msg_id": "34CC905A-5E12-40BD-9B61-6A15FA30EC03",
+ "status": "ABANDONED",
+ "baseline_total": 2047,
+ "created_at": "2026-11-28T03:04:58+08:00",
+ "updated_at": "2026-11-28T03:04:58+08:00",
+ "routes": [],
+ "reads": [],
+ "plan": [],
+ "executions": [],
+ "verifications": [],
+ "blockers": [],
+ "failures": [],
+ "completion": {
+  "result": "abandoned",
+  "reason": "被新消息取代，未通过验收",
+  "at": "2026-11-28T03:09:00+08:00"
+ }
+}

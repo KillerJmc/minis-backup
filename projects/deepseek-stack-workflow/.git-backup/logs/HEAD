@@ -1,0 +1,19 @@
+0000000000000000000000000000000000000000 d7dc2838c708a3921c89de1c802f7589de980d5b Minis <minis@local> 1795705045 +0800	commit (initial): 初始：安装 deepseek-stack 9 个技能（上游 d4f1ebe）
+d7dc2838c708a3921c89de1c802f7589de980d5b 66a6a017065cb6d8cd6f614a371e15f64d1689b8 Minis <minis@local> 1795705250 +0800	commit: chore: 技能工程骨架（.gitignore / temp）
+66a6a017065cb6d8cd6f614a371e15f64d1689b8 e32211111274a1252b795d041da4bc0163994e07 Minis <minis@local> 1795705562 +0800	commit: chore: 技能工程改造（PROJECT.md / .gitignore / temp）
+e32211111274a1252b795d041da4bc0163994e07 6693eb92440d63969de809a28280d81a93419d75 Minis <minis@local> 1795705588 +0800	commit: docs: PROGRESS 改为 29 合 1 的当前状态
+6693eb92440d63969de809a28280d81a93419d75 06b203b5385fc2a3741e564234d8dd4f9f5d9013 Minis <minis@local> 1795705671 +0800	commit: docs: 技能改名、.gitignore 指向新目录名
+06b203b5385fc2a3741e564234d8dd4f9f5d9013 77bc042fea34e8b7d098443d1eab54b015b457f0 Minis <minis@local> 1795705718 +0800	commit: docs: 为什么这样设计压成一行
+77bc042fea34e8b7d098443d1eab54b015b457f0 97606b44aa569d6b8a0f46807fd609e80177d402 Minis <minis@local> 1795705746 +0800	commit: docs: 遗留项改为覆盖关系已确认
+97606b44aa569d6b8a0f46807fd609e80177d402 1a7799ad84328295a359f3fec0c628088608d093 Minis <minis@local> 1795705769 +0800	commit: docs: PROGRESS 更新为已上线状态
+1a7799ad84328295a359f3fec0c628088608d093 cc3b461cf79932c86f2750d8ebf5beb2d749f936 Minis <minis@local> 1795706176 +0800	commit: docs: 纯路由版说明，记录 1.0.0 误发布已撤回
+cc3b461cf79932c86f2750d8ebf5beb2d749f936 97fbd02d53d1871a4d580969efdc725540a9db69 Minis <minis@local> 1795706245 +0800	commit: docs: 9 个独立 ds-* 已删
+97fbd02d53d1871a4d580969efdc725540a9db69 50cca9b85387b2368f6d0d5c4a46a968f1ab9c1b Minis <minis@local> 1795706271 +0800	commit: chore: 删掉 1.0.0 时期的 9 个 ds-* 快照（原文已在 references/ 并由 manifest 校验）
+50cca9b85387b2368f6d0d5c4a46a968f1ab9c1b c03700af46dd1519a12cdf8d41ef6db1fb089006 Minis <minis@local> 1795706390 +0800	commit: docs: 壳不做路由判断，说明与进度同步
+c03700af46dd1519a12cdf8d41ef6db1fb089006 a5240f26a330d401e5d088d88001ebceb83aafbb Minis <minis@local> 1795706411 +0800	commit: docs: 上线前版本号统一为 1.0.0
+a5240f26a330d401e5d088d88001ebceb83aafbb d0c604a5fa85033e4a4a8aae4a6842dddf668129 Minis <minis@local> 1795706416 +0800	commit: docs: 清掉残留的 2.x 版本引用
+d0c604a5fa85033e4a4a8aae4a6842dddf668129 a634c36b120acad387a15cb641b43bf47c851e2e Minis <minis@local> 1795707466 +0800	commit: chore(temp): 选择排序演练产物（单文件 Java，6 个用例自测）
+a634c36b120acad387a15cb641b43bf47c851e2e 700665833d2cc7c5f1da9ec6c3aa3119d3ecf045 Minis <minis@local> 1795708638 +0800	commit: chore(temp): 删除选择排序，换成 Dijkstra（7 个用例）
+700665833d2cc7c5f1da9ec6c3aa3119d3ecf045 d058e06e70d5930fb2af85bd0fc25440c4327326 Minis <minis@local> 1795709185 +0800	commit: chore(temp): Floyd 全源最短路（8 个用例 + 与 Dijkstra 交叉验证）
+d058e06e70d5930fb2af85bd0fc25440c4327326 07586d6a03c0c7664ef339731082cea7a0cea0f7 Minis <minis@local> 1795709471 +0800	commit: feat(temp): Floyd 加 next 矩阵与路径还原，修掉压缩路径的显示错误；加可视化演示
+07586d6a03c0c7664ef339731082cea7a0cea0f7 3fd875177f232165464427e1216993ff3c5f5356 Minis <minis@local> 1795710535 +0800	commit: chore(temp): 冒泡排序（7 个用例 + 500 组随机对拍）

@@ -1,0 +1,7 @@
+0000000000000000000000000000000000000000 76d49eec456ab5959c51d3be5a351b4087fc8bde Minis <minis@local> 1795705562 +0800	commit (initial): 初始：29 个上游技能合成一个，分诊入口 + 六份 references
+76d49eec456ab5959c51d3be5a351b4087fc8bde e3f635ed89c3d1e8e066cbaf36dca6246f3de5f7 Minis <minis@local> 1795705588 +0800	commit: docs: 分诊段补走法样例
+e3f635ed89c3d1e8e066cbaf36dca6246f3de5f7 90276d070516ab145258bcda8002fc875a473a51 Minis <minis@local> 1795705610 +0800	commit: fix: 分诊表措辞（段数与 references 计数）
+90276d070516ab145258bcda8002fc875a473a51 010a2521ed81b87dfa3d1a26f8bdb73c42f8fb1a Minis <minis@local> 1795705671 +0800	commit: refactor: 技能名改为 deepseek-stack-workflow（对齐 App 分组名）
+010a2521ed81b87dfa3d1a26f8bdb73c42f8fb1a 96cf5e4085e0365c70b082ca36cc7868ce5c5144 Minis <minis@local> 1795757069 +0800	commit: feat: v1.1.1 外部技能接入 + 沙盒双技能用例 + 标题区分内外
+96cf5e4085e0365c70b082ca36cc7868ce5c5144 96cf5e4085e0365c70b082ca36cc7868ce5c5144 root <root@localhost.(none)> 1795760783 +0800	reset: moving to HEAD
+96cf5e4085e0365c70b082ca36cc7868ce5c5144 058f0a6ae3240954f53d880a79d073e714323506 Minis <minis@local> 1795809519 +0800	commit: feat: v1.0.0 首次发布（会话隔离、锚点检查、审计对齐、严格匹配）

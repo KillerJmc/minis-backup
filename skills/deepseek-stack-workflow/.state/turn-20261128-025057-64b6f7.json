@@ -1,0 +1,38 @@
+{
+ "turn_id": "20261128-025057-64b6f7",
+ "session_id": "5A976D3D-8322-4081-AB40-7663C0E477C6",
+ "anchor_msg_id": "D1144182-D826-4612-A24C-78E91587DACA",
+ "status": "ABANDONED",
+ "baseline_total": 2047,
+ "created_at": "2026-11-28T02:50:58+08:00",
+ "updated_at": "2026-11-28T02:51:36+08:00",
+ "routes": [],
+ "reads": [
+  {
+   "skill": "ds-help",
+   "path": "/var/minis/mounts/Minis/projects/deepseek-stack-workflow/deepseek-stack-workflow/references/ds-help.md",
+   "source": "internal",
+   "bytes": 1567,
+   "lines": 44,
+   "md5": "0f3b81d6d4d274d796a23bc4f996d7b2",
+   "headings": [
+    "## Pick a skill",
+    "## Rules"
+   ],
+   "summary": "--- name: ds-help description: \"Pick the right deepseek-stack skill for a task and explain how the pack fits together. Use when the user asks which skill to use, what the pack contains, or types /ds-h",
+   "at": "2026-11-28T02:51:22+08:00",
+   "result": "ok"
+  }
+ ],
+ "plan": [],
+ "executions": [],
+ "verifications": [],
+ "blockers": [],
+ "failures": [],
+ "completion": {
+  "result": "abandoned",
+  "reason": "被新消息取代，未通过验收",
+  "at": "2026-11-28T03:04:58+08:00"
+ },
+ "checked_total": 2048
+}

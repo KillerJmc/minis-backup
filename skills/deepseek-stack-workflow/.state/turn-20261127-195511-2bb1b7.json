@@ -1,0 +1,36 @@
+{
+ "turn_id": "20261127-195511-2bb1b7",
+ "status": "ROUTE_PENDING",
+ "baseline_total": 1825,
+ "created_at": "2026-11-27T19:55:11+08:00",
+ "updated_at": "2026-11-27T19:55:22+08:00",
+ "routes": [],
+ "reads": [
+  {
+   "skill": "ds-help",
+   "path": "/var/minis/mounts/Minis/projects/deepseek-stack-workflow/deepseek-stack-workflow/references/ds-help.md",
+   "source": "internal",
+   "bytes": 1567,
+   "lines": 44,
+   "md5": "0f3b81d6d4d274d796a23bc4f996d7b2",
+   "headings": [
+    "## Pick a skill",
+    "## Rules"
+   ],
+   "summary": "--- name: ds-help description: \"Pick the right deepseek-stack skill for a task and explain how the pack fits together. Use when the user asks which skill to use, what the pack contains, or types /ds-h",
+   "at": "2026-11-27T19:55:22+08:00",
+   "result": "ok"
+  }
+ ],
+ "plan": [],
+ "executions": [],
+ "verifications": [],
+ "blockers": [],
+ "failures": [],
+ "completion": null,
+ "checked_total": 1827,
+ "violations": [
+  "read ds-help → 标题「创建新一轮并读路由」缺技能名",
+  "start 的标题应为「创建工作流记录」，实际「创建新一轮并读路由」"
+ ]
+}
